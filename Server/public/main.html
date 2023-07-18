@@ -1,0 +1,222 @@
+<html>
+<head>
+	<meta http-equiv="Cache-control" content="no-cache">
+	<style>
+	body{
+		position:relative;
+		top:-65px;
+		left:100px;
+	    -webkit-transform: rotate(90deg);
+	    -moz-transform: rotate(90deg);
+	    -o-transform: rotate(90deg);
+	    -ms-transform: rotate(90deg);
+	    transform: rotate(90deg);
+		overflow:hidden;
+	}
+
+	</style>
+	<link rel="stylesheet" href="main.css">
+	<script src="jquery-3.1.1.js"></script>
+	<script src="main.js"></script>
+	<script>
+
+	var d = new Date();
+
+	function timeTable(){
+		var weekday = d.getDay();
+		var hour = d.getHours();
+		var minute = d.getMinutes();
+		console.log("weekday = " + weekday +" hours= " + hour + " minutes= "+ minute);
+		var table = document.getElementById("table2");
+		var myColor = "lightgreen";
+
+		if(weekday == 0){
+		switch(hour){
+			case 10:
+				table.rows[1].cells[0].style.backgroundColor = myColor;
+				break;
+			case 11:
+				if(minute>30){
+				table.rows[1].cells[1].style.backgroundColor = myColor;
+				}
+				break;
+			case 12:
+				if(30>minute){
+				table.rows[1].cells[1].style.backgroundColor = myColor;
+				}
+			case 16:
+				table.rows[1].cells[2].style.backgroundColor = myColor;
+				break;
+
+		}
+
+		}
+		if((hour==9 && minute>30)||hour==10||hour==11){
+		switch(weekday){
+			case 1:
+				table.rows[1].cells[1].style.backgroundColor = myColor;
+				break;
+			case 2:
+				table.rows[2].cells[1].style.backgroundColor = myColor;
+				break;
+			case 3:
+				table.rows[3].cells[1].style.backgroundColor = myColor;
+				break;
+			case 4:
+				table.rows[4].cells[1].style.backgroundColor = myColor;
+				break;
+			case 5:
+				table.rows[5].cells[1].style.backgroundColor = myColor;
+				break;
+			case 6:
+				table.rows[6].cells[1].style.backgroundColor = myColor;
+				break;
+
+			}
+		}
+
+
+		if(hour==15 && minute>30 || hour == 16 || hour == 17){
+		switch(weekday){
+			case 1:
+				table.rows[1].cells[2].style.backgroundColor = myColor;
+				break;
+			case 2:
+				table.rows[2].cells[2].style.backgroundColor = myColor;
+				break;
+			case 3:
+				table.rows[3].cells[2].style.backgroundColor = myColor;
+				break;
+			case 4:
+				table.rows[4].cells[2].style.backgroundColor = myColor;
+				break;
+			case 5:
+				table.rows[5].cells[2].style.backgroundColor = myColor;
+				break;
+			case 6:
+				table.rows[6].cells[2].style.backgroundColor = myColor;
+				break;
+
+			}
+		}
+	}
+
+	$( document ).ready(function() {
+	    getTable('table1');
+		getTable('table2');
+		getTable('table3');
+		getLine('line1');
+		getLine('line2');
+		getFeiertagsObj();
+		setInterval(function(){getStatus()}, 500);
+		setInterval(function(){getTable('table1');
+		getTable('table2');
+		getTable('table3');
+		getLine('line1');
+		getLine('line2');
+		getFeiertagsObj();
+		//timeTable();
+
+		}, 500);
+	});
+
+	</script>
+</head>
+<body>
+	<div id="masterDiv">
+		<div id="headerDiv">
+			<h1 id="header">Beichtdienst</h1>
+		</div>
+
+		<br>
+
+		<div id="line1Div">
+			<p class="line" id="line1">Vom  27. November – 4. Dezember  2016</p>
+		</div>
+		<div id="line2Div">
+			<p class="line" id="line2">An  Sonn- und Feiertagen während der Hl. Messe</p>
+		</div>
+		<div id="table1Div">
+			<table id="table1">
+				<tr>
+					<td class ="singleRow" rowspan="2">27.November <br> 1.Adventsonntag</td>
+					<td class="grey zeiten">10 Uhr</td>
+					<td class="grey zeiten">11.30 Uhr</td>
+					<td class="grey zeiten">16 Uhr</td>
+				</tr>
+				<tr>
+					<td class="bigRow cursive">Br. Karl-M.</td>
+					<td class="bigRow cursive"">Br. Karl-M.</td>
+					<td class="bigRow cursive">Br. Karl-M.</td>
+				</tr>
+			</table>
+		</div>
+		<div id="table2Div">
+			<table id="table2">
+				<tr>
+
+					<td class="grey"></td>
+					<td class="grey zeiten">11.30 Uhr</td>
+					<td class="grey zeiten">16 Uhr</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Montag</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive" >Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Dienstag</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive">Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Mittwoch</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive">Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Donnerstag</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive">Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Freitag</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive">Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey">Samstag</td>
+					<td class="cursive">Br. Albert</td>
+					<td class="cursive">Br. Albert</td>
+				</tr>
+
+			</table>
+		</div>
+		<div id="table3Div">
+			<table id="table3">
+				<tr>
+					<td class ="singleRow" rowspan="2">4.Dezember <br> 2.Adventsonntag</td>
+					<td class="zeiten grey">10 Uhr</td>
+					<td class="zeiten grey">11.30 Uhr</td>
+					<td class="zeiten grey">16 Uhr</td>
+				</tr>
+				<tr>
+					<td class="bigRow cursive">Br. Karl-M.</td>
+					<td class="bigRow cursive">Br. Karl-M.</td>
+					<td class="bigRow cursive">Br. Karl-M.</td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<p id="sign">BITTE WARTEN</p>
+		</div>
+
+	</div>
+</body>
+</html>

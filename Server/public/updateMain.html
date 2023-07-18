@@ -1,0 +1,139 @@
+<html>
+<head>
+	<link rel="stylesheet" href="main.css">
+	<script src="jquery-3.1.1.js"></script>
+	
+	<script src="main.js"></script>
+	<script>
+	$( document ).ready(function() {
+	    getTable('table1');
+		getTable('table2');
+		getTable('table3');
+		getLine('line1');
+		getLine('line2');
+		getFeiertagsObj();
+	});
+	function saveDocument(){
+		sendTable(tableToArray('table1'),'table1');
+		sendTable(tableToArray('table2'),'table2');
+		sendTable(tableToArray('table3'),'table3');
+		sendLine('line1');
+		sendLine('line2');
+		sendFeiertagsObj();
+
+
+	}
+	</script>
+</head>
+<body>
+	<div id="masterDiv">
+		<div id="headerDiv">
+			<h1 id="header">Beichtdienst</h1>
+		</div>
+		<div id="line1Div">
+			<p contenteditable class="line" id="line0">Vom  27. November – 4. Dezember  2016</p>
+		</div>
+		<div id="line2Div">
+			<p contenteditable class="line" id="line1">An  Sonn- und Feiertagen während der Hl. Messe</p>
+		</div>
+		<div id="table1Div">
+			<table contenteditable id="table0">
+				<tr>
+					<td class ="singleRow" rowspan="2">27.November <br> 1.Adventssonntag</td>
+					<td class="zeiten">10 Uhr</td>
+					<td class="zeiten">11.30 Uhr</td>
+					<td class="zeiten">16 Uhr</td>
+				</tr>
+				<tr>
+					<td class="bigRow">Br. Karl-M.</td>
+					<td class="bigRow">Br. Karl-M.</td>
+					<td class="bigRow">Br. Karl-M.</td>
+				</tr>
+			</table>
+		</div>
+		<div id="table2Div">
+			<table contenteditable id="table1">
+				<tr>
+
+					<td></td>
+					<td class="grey zeiten">11.30 Uhr</td>
+					<td class="grey zeiten">16 Uhr</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochentag">Montag</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochentag">Dienstag</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochetag">Mittwoch</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochentag">Donnerstag</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochentag">Freitag</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+				<tr>
+
+					<td class="grey wochentag">Samstag</td>
+					<td>Br. Albert</td>
+					<td>Br. Albert</td>
+				</tr>
+
+			</table>
+		</div>
+		<div id="table3Div">
+			<table contenteditable id="table2">
+				<tr>
+					<td class ="singleRow" rowspan="2">4.Dezember <br> 2.Adventssonntag</td>
+					<td class="zeiten">10 Uhr</td>
+					<td class="zeiten">11.30 Uhr</td>
+					<td class="zeiten">16 Uhr</td>
+				</tr>
+				<tr>
+					<td class="bigRow">Br. Karl-M.</td>
+					<td class="bigRow">Br. Karl-M.</td>
+					<td class="bigRow">Br. Karl-M.</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="buttonDiv">
+			<div id="innerButtonDiv">
+				<button id="saveButton" onclick="saveDocument()">Save</button>
+			</div>
+		</div>
+
+
+		<div id="FeiertagDiv">
+			<p>Gibt es Feiertage?</p>
+			<button class ="FeiertagButton" id="weekday0" onclick=toggleHoliday(0)>Montag</button><br>
+			<button class ="FeiertagButton" id="weekday1" onclick=toggleHoliday(1)>Dienstag</button><br>
+			<button class ="FeiertagButton" id="weekday2" onclick=toggleHoliday(2)>Mittwoch</button><br>
+			<button class ="FeiertagButton" id="weekday3" onclick=toggleHoliday(3)>Donnerstag</button><br>
+			<button class ="FeiertagButton" id="weekday4" onclick=toggleHoliday(4)>Freitag</button><br>
+			<button class ="FeiertagButton" id="weekday5" onclick=toggleHoliday(5)>Samstag</button><br><br>
+			<button class ="FeiertagButton" id="weekday6" onclick=toggleHoliday(-1)>Keine</button><br>
+			<!--<button class ="TestButton" id="TestButton" onclick="sendFeiertagsObj()">Test</button><br>-->
+		</div>
+
+	</div>
+	<script type="module" src="UpdateData.js"></script>
+</body>
+</html>
