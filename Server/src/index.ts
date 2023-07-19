@@ -10,18 +10,19 @@ import { Message, MessageFactory,MessageTypes } from './Message.js';
 const handleConnections = (ws, req) => {
     console.log('A new client connected');
     console.log(req.socket.remoteAddress);
-    ws.on('message', (message) => {
-        console.log('received: %s', message);
+    ws.on('message', (messageString) => {
+        console.log('received: %s', messageString);
         try {
-            let m:Message = JSON.parse(message.toString());
-            if (m.type == MessageTypes.status) {
+            let message:Message = JSON.parse(messageString.toString());
+            if (message.type == MessageTypes.status) {
             }
-            if (m.type == MessageTypes.table) {
-                mydb.updateHTML_Table(m.tableId,m.value).then(()=>{
+            if (message.type == MessageTypes.table) {
+                mydb.updateHTML_Table(message.tableId,message.value).then(()=>{
                     
                 })
             }
-            if (m.type == MessageTypes.holiday) {
+            if (message.type == MessageTypes.holiday) {
+                mydb.updateHolidays(message.value)
             }
         } catch (err) {
             console.log(err);

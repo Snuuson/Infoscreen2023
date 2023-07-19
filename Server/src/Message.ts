@@ -31,7 +31,7 @@ class MessageFactory {
         return message;
     };
 
-    public static CreateHoliday = (json_string) => {
+    public static CreateHolidayMessage = (json_string) => {
         return new Message(MessageTypes.holiday, json_string);
     };
 }

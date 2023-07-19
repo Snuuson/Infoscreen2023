@@ -10,11 +10,13 @@ class ReconnectingWebSocket{
     webSocketServerAddress:string
     socket:WebSocket
     onOpen:CallableFunction
-    constructor(webSocketServerAddress,onOpen=(ws)=>{},reconnectTimeoutInSeconds = 10){
+    onMessage:CallableFunction
+    constructor(webSocketServerAddress,onOpen=(ws)=>{},onMessage=(msg)=>{},reconnectTimeoutInSeconds = 10){
         this.webSocketServerAddress = webSocketServerAddress
         this.reconnectTimeoutInSeconds = reconnectTimeoutInSeconds
         this.connectToWebSocketServer()
         this.onOpen = onOpen
+        this.onMessage = onMessage
     }
 
     public sendMessage(message:Message){
@@ -36,25 +38,10 @@ class ReconnectingWebSocket{
                 this.onOpen(this)
             });
             this.socket.addEventListener('close', () => {
-                document.getElementById('wsMessageText').innerHTML = 'Connection got Terminated';
                 setTimeout(this.connectToWebSocketServer, this.reconnectTimeoutInSeconds * 1000);
             });
             this.socket.addEventListener('message', (message) => {
-                if(message.data.split(" ")[0] == "Status"){
-                    
-                    let sign = document.getElementById("sign")
-                    if(message.data.split(" ")[1] == 1){
-    
-                        sign.innerHTML="BITTE   EINTRETEN";
-                        sign.style.backgroundColor = 'green';
-                    }
-                    else{
-                        sign.innerHTML="BITTE   WARTEN";
-                        sign.style.backgroundColor = '#b534d8';
-                    }
-                }
-                document.getElementById('wsMessageText').innerHTML = message.data;
-                console.log(message.data);
+                this.onMessage(message)
             });
         }
     };

@@ -2,10 +2,13 @@
 <head>
 	<link rel="stylesheet" href="main.css">
 	<script src="jquery-3.1.1.js"></script>
-	
-	<script src="main.js"></script>
-	<script>
+	<script type="module">
+		import {DataUpdater} from "./UpdateData.js"
+		globalThis.InfoscreenUpdater = new DataUpdater()
+	</script>
+	<!-- <script>
 	$( document ).ready(function() {
+		DataUpdater.print()
 	    getTable('table1');
 		getTable('table2');
 		getTable('table3');
@@ -23,7 +26,7 @@
 
 
 	}
-	</script>
+	</script> -->
 </head>
 <body>
 	<div id="masterDiv">
@@ -36,7 +39,7 @@
 		<div id="line2Div">
 			<p contenteditable class="line" id="line1">An  Sonn- und Feiertagen während der Hl. Messe</p>
 		</div>
-		<div id="table1Div">
+		<div id="table0Div">
 			<table contenteditable id="table0">
 				<tr>
 					<td class ="singleRow" rowspan="2">27.November <br> 1.Adventssonntag</td>
@@ -51,7 +54,7 @@
 				</tr>
 			</table>
 		</div>
-		<div id="table2Div">
+		<div id="table1Div">
 			<table contenteditable id="table1">
 				<tr>
 
@@ -98,7 +101,7 @@
 
 			</table>
 		</div>
-		<div id="table3Div">
+		<div id="table2Div">
 			<table contenteditable id="table2">
 				<tr>
 					<td class ="singleRow" rowspan="2">4.Dezember <br> 2.Adventssonntag</td>
@@ -116,24 +119,24 @@
 
 		<div id="buttonDiv">
 			<div id="innerButtonDiv">
-				<button id="saveButton" onclick="saveDocument()">Save</button>
+				<button id="saveButton" onclick="InfoscreenUpdater.submitHolidaysToDatabase()">Save</button>
 			</div>
 		</div>
 
 
 		<div id="FeiertagDiv">
 			<p>Gibt es Feiertage?</p>
-			<button class ="FeiertagButton" id="weekday0" onclick=toggleHoliday(0)>Montag</button><br>
-			<button class ="FeiertagButton" id="weekday1" onclick=toggleHoliday(1)>Dienstag</button><br>
-			<button class ="FeiertagButton" id="weekday2" onclick=toggleHoliday(2)>Mittwoch</button><br>
-			<button class ="FeiertagButton" id="weekday3" onclick=toggleHoliday(3)>Donnerstag</button><br>
-			<button class ="FeiertagButton" id="weekday4" onclick=toggleHoliday(4)>Freitag</button><br>
-			<button class ="FeiertagButton" id="weekday5" onclick=toggleHoliday(5)>Samstag</button><br><br>
-			<button class ="FeiertagButton" id="weekday6" onclick=toggleHoliday(-1)>Keine</button><br>
+			<button class ="FeiertagButton" id="weekday0" onclick=InfoscreenUpdater.toggleHoliday(0)>Montag</button><br>
+			<button class ="FeiertagButton" id="weekday1" onclick=InfoscreenUpdater.toggleHoliday(1)>Dienstag</button><br>
+			<button class ="FeiertagButton" id="weekday2" onclick=InfoscreenUpdater.toggleHoliday(2)>Mittwoch</button><br>
+			<button class ="FeiertagButton" id="weekday3" onclick=InfoscreenUpdater.toggleHoliday(3)>Donnerstag</button><br>
+			<button class ="FeiertagButton" id="weekday4" onclick=InfoscreenUpdater.toggleHoliday(4)>Freitag</button><br>
+			<button class ="FeiertagButton" id="weekday5" onclick=InfoscreenUpdater.toggleHoliday(5)>Samstag</button><br><br>
+			<button class ="FeiertagButton" id="weekday6" onclick=InfoscreenUpdater.toggleHoliday(-1)>Keine</button><br>
 			<!--<button class ="TestButton" id="TestButton" onclick="sendFeiertagsObj()">Test</button><br>-->
 		</div>
 
 	</div>
-	<script type="module" src="UpdateData.js"></script>
+	
 </body>
 </html>
