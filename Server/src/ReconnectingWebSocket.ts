@@ -1,9 +1,5 @@
 import { Message, MessageFactory,MessageTypes } from "./Message.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-});
-
 class ReconnectingWebSocket{
 
     reconnectTimeoutInSeconds:number
