@@ -18,6 +18,26 @@
 	<link rel="stylesheet" href="main.css">
 	<script src="jquery-3.1.1.js"></script>
 	<script src="main.js"></script>
+	<script type="module" src="UpdateData.js"></script>
+	<script>
+		addEventListener('DOMContentLoaded', (event) => {
+				db.getHolidays().then((res) => {
+                    updateHolidayTableColors(res);
+                    state.holidays = res;
+                });
+                db.getHTMLTable().then((json_result) => {
+                    for (let i = 0; i < json_result.length; i++) {
+                        insertArrayDataIntoHTMLTable(i, json_result[i]);
+                    }
+                });
+                db.getHeadLines().then((res) => {
+                    for (let i = 0; i < res.length; i++) {
+                        document.getElementById(`line${i}`).innerHTML = res[i];
+                    }
+                });
+
+		})
+	</script>
 	<script>
 
 	var d = new Date();
@@ -131,13 +151,13 @@
 		<br>
 
 		<div id="line1Div">
-			<p class="line" id="line1">Vom  27. November – 4. Dezember  2016</p>
+			<p class="line" id="line0">Vom  27. November – 4. Dezember  2016</p>
 		</div>
 		<div id="line2Div">
-			<p class="line" id="line2">An  Sonn- und Feiertagen während der Hl. Messe</p>
+			<p class="line" id="line1">An  Sonn- und Feiertagen während der Hl. Messe</p>
 		</div>
 		<div id="table1Div">
-			<table id="table1">
+			<table id="table0">
 				<tr>
 					<td class ="singleRow" rowspan="2">27.November <br> 1.Adventsonntag</td>
 					<td class="grey zeiten">10 Uhr</td>
@@ -152,7 +172,7 @@
 			</table>
 		</div>
 		<div id="table2Div">
-			<table id="table2">
+			<table id="table1">
 				<tr>
 
 					<td class="grey"></td>
@@ -199,7 +219,7 @@
 			</table>
 		</div>
 		<div id="table3Div">
-			<table id="table3">
+			<table id="table2">
 				<tr>
 					<td class ="singleRow" rowspan="2">4.Dezember <br> 2.Adventsonntag</td>
 					<td class="zeiten grey">10 Uhr</td>

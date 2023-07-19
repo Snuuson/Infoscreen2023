@@ -80,7 +80,7 @@ wss.on('connection', (ws, req) => {
 });
 
 //Configure Static routes
-app.use(express.static('public'));
+app.use(express.static('static'));
 app.use(express.static('dist'));
 app.use('/src', express.static('src'));
 
