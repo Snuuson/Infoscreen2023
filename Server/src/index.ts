@@ -19,7 +19,7 @@ const handleConnections = (ws, req) => {
     });
     setInterval(() => {
         ws.send('Status ' + randomIntFromInterval(0, 1));
-    }, 10000);
+    }, 1000);
 };
 
 app.post('/updateHeadLines', jsonParser, (req, res) => {

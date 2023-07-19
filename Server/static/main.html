@@ -19,6 +19,24 @@
 	<script src="jquery-3.1.1.js"></script>
 	<script src="main.js"></script>
 	<script type="module" src="UpdateData.js"></script>
+	<script type="module">
+		import ReconnectingWebSocket from "./ReconnectingWebSocket.js"
+		let ws =  new ReconnectingWebSocket("ws://localhost:3000")
+		ws.onMessage = (msg)=>{
+			console.log(msg)
+			let sign = document.getElementById("sign")
+			if(msg.data.split(" ")[1] == 1){
+				sign.innerHTML="BITTE   EINTRETEN";
+				sign.style.backgroundColor = 'green';
+			}
+			else{
+				sign.innerHTML="BITTE   WARTEN";
+				sign.style.backgroundColor = '#b534d8';
+			}
+			
+			
+		}
+	</script>
 	<script>
 		addEventListener('DOMContentLoaded', (event) => {
 				db.getHolidays().then((res) => {
