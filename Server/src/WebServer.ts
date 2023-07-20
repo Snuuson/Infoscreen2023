@@ -18,11 +18,11 @@ const handleConnections = (ws, req) => {
     ws.on('close', () => {
         ws.send('Client Disconnected: ');
     });
-    setInterval(() => {
-        const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
-        const json_msg = JSON.stringify(msg);
-        ws.send(json_msg);
-    }, 1000);
+    // setInterval(() => {
+    //     const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
+    //     const json_msg = JSON.stringify(msg);
+    //     ws.send(json_msg);
+    // }, 1000);
 };
 const OnModelUpdate = () => {
     wss.clients.forEach((ws) => {
@@ -105,8 +105,17 @@ if (!isWin) {
     const led = new Gpio(17, 'out');
     const button = new Gpio(4, 'in', 'both');
     console.log("GPIO active")
-    button.watch((err, value) => {
-        console.log(err)    
+    let currentValue = 0
+    button.watch((err, value:number) => {
+        
+        if(err){
+            console.log(err)
+        }   
+        if(currentValue != value){
+            wss.clients.forEach((ws)=>{
+                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(1===value)))
+            })
+        }
         console.log(value)
     });
 }
