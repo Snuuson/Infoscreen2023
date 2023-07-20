@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
-import {MessageFactory} from './Message.js';
+import { MessageFactory } from './Message.js';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -22,40 +22,40 @@ const handleConnections = (ws, req) => {
         const json_msg = JSON.stringify(msg);
         ws.send(json_msg);
     }, 1000);
-    
 };
-const OnModelUpdate = (req,res,next) => {
-    wss.clients.forEach((ws)=>{
-        ws.send(JSON.stringify(MessageFactory.CreateUpdateMessage()))
-    })
-    next()
+const OnModelUpdate = () => {
+    wss.clients.forEach((ws) => {
+        ws.send(JSON.stringify(MessageFactory.CreateUpdateMessage()));
+    });
 };
 
-
-app.post('/updateHeadLines',OnModelUpdate, jsonParser, (req, res) => {
+app.post('/updateHeadLines', jsonParser, async (req, res) => {
     try {
-        db.updateHeadLines(JSON.stringify(req.body));
+        await db.updateHeadLines(JSON.stringify(req.body));
+        OnModelUpdate();
         console.log('/updateHeadLines');
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
     }
 });
-app.post('/updateHTMLTables',OnModelUpdate, jsonParser, (req, res) => {
+app.post('/updateHTMLTables', jsonParser, async (req, res) => {
     try {
         let tableArray = req.body;
         for (let i = 0; i < tableArray.length; i++) {
-            db.updateHTMLTable(i, tableArray[i]);
+            await db.updateHTMLTable(i, tableArray[i]);
         }
+        OnModelUpdate();
         console.log('/updateHTMLTables');
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
     }
 });
-app.post('/updateHolidays',OnModelUpdate, jsonParser, (req, res) => {
+app.post('/updateHolidays', jsonParser, async (req, res) => {
     try {
-        db.updateHolidays(JSON.stringify(req.body));
+        await db.updateHolidays(JSON.stringify(req.body));
+        OnModelUpdate();
         console.log('/updateHolidays');
         res.sendStatus(200);
     } catch (error) {

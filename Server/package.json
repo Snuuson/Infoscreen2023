@@ -9,7 +9,7 @@
     "build-common":"tsc  --project tsconfig-commonjs.json ",
     "build-dev": "tsc",
     "build-prod": "(IF EXIST dist\\ rmdir /s /q %cd%\\dist\\) && tsc  --project tsconfig-prod.json",
-    "watch-and-run": "tsc && nodemon --watch src --exec ts-node-esm ./src/index.ts"
+    "watch-and-run": "tsc && nodemon --watch src --exec ts-node-esm ./src/Webserver.ts"
   },
   "repository": {
     "type": "git",

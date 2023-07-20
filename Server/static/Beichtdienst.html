@@ -1,118 +1,114 @@
 <html>
-<head>
-	<meta http-equiv="Cache-control" content="no-cache">
-	<style>
-	body{
-		position:relative;
-		top:-65px;
-		left:100px;
-	    -webkit-transform: rotate(90deg);
-	    -moz-transform: rotate(90deg);
-	    -o-transform: rotate(90deg);
-	    -ms-transform: rotate(90deg);
-	    transform: rotate(90deg);
-		overflow:hidden;
-	}
+    <head>
+        <meta http-equiv="Cache-control" content="no-cache" />
+        <style>
+            body {
+                position: relative;
+                top: -65px;
+                left: 100px;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+                -o-transform: rotate(90deg);
+                -ms-transform: rotate(90deg);
+                transform: rotate(90deg);
+                overflow: hidden;
+            }
+        </style>
+        <link rel="stylesheet" href="main.css" />
+        <script type="module" src="BeichtdienstInfoscreen.js"></script>
+    </head>
+    <body>
+        <div id="masterDiv">
+            <div id="headerDiv">
+                <h1 id="header">Beichtdienst</h1>
+            </div>
 
-	</style>
-	<link rel="stylesheet" href="main.css">
-	<script type="module" src="Beichtdienst.js"></script>
-</head>
-<body>
-	<div id="masterDiv">
-		<div id="headerDiv">
-			<h1 id="header">Beichtdienst</h1>
-		</div>
+            <br />
 
-		<br>
-
-		<div id="line1Div">
-			<p class="line" id="line0">Vom  27. November – 4. Dezember  2016</p>
-		</div>
-		<div id="line2Div">
-			<p class="line" id="line1">An  Sonn- und Feiertagen während der Hl. Messe</p>
-		</div>
-		<div id="table1Div">
-			<table id="table0">
-				<tr>
-					<td class ="singleRow" rowspan="2">27.November <br> 1.Adventsonntag</td>
-					<td class="grey zeiten">10 Uhr</td>
-					<td class="grey zeiten">11.30 Uhr</td>
-					<td class="grey zeiten">16 Uhr</td>
-				</tr>
-				<tr>
-					<td class="bigRow cursive">Br. Karl-M.</td>
-					<td class="bigRow cursive"">Br. Karl-M.</td>
-					<td class="bigRow cursive">Br. Karl-M.</td>
-				</tr>
-			</table>
-		</div>
-		<div id="table2Div">
-			<table id="table1">
-				<tr>
-
-					<td class="grey"></td>
-					<td class="grey zeiten">11.30 Uhr</td>
-					<td class="grey zeiten">16 Uhr</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Montag</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive" >Br. Albert</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Dienstag</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive">Br. Albert</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Mittwoch</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive">Br. Albert</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Donnerstag</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive">Br. Albert</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Freitag</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive">Br. Albert</td>
-				</tr>
-				<tr>
-
-					<td class="grey">Samstag</td>
-					<td class="cursive">Br. Albert</td>
-					<td class="cursive">Br. Albert</td>
-				</tr>
-
-			</table>
-		</div>
-		<div id="table3Div">
-			<table id="table2">
-				<tr>
-					<td class ="singleRow" rowspan="2">4.Dezember <br> 2.Adventsonntag</td>
-					<td class="zeiten grey">10 Uhr</td>
-					<td class="zeiten grey">11.30 Uhr</td>
-					<td class="zeiten grey">16 Uhr</td>
-				</tr>
-				<tr>
-					<td class="bigRow cursive">Br. Karl-M.</td>
-					<td class="bigRow cursive">Br. Karl-M.</td>
-					<td class="bigRow cursive">Br. Karl-M.</td>
-				</tr>
-			</table>
-		</div>
-		<div>
-			<p id="sign">BITTE WARTEN</p>
-		</div>
-
-	</div>
-</body>
+            <div id="line1Div">
+                <p class="line" id="line0">Vom 27. November – 4. Dezember 2016</p>
+            </div>
+            <div id="line2Div">
+                <p class="line" id="line1">An Sonn- und Feiertagen während der Hl. Messe</p>
+            </div>
+            <div id="table1Div">
+                <table id="table0">
+                    <tr>
+                        <td class="singleRow" rowspan="2">
+                            27.November <br />
+                            1.Adventsonntag
+                        </td>
+                        <td class="grey zeiten">10 Uhr</td>
+                        <td class="grey zeiten">11.30 Uhr</td>
+                        <td class="grey zeiten">16 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="table2Div">
+                <table id="table1">
+                    <tr>
+                        <td class="grey"></td>
+                        <td class="grey zeiten">11.30 Uhr</td>
+                        <td class="grey zeiten">16 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Montag</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Dienstag</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Mittwoch</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Donnerstag</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Freitag</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                    <tr>
+                        <td class="grey">Samstag</td>
+                        <td class="cursive">Br. Albert</td>
+                        <td class="cursive">Br. Albert</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="table3Div">
+                <table id="table2">
+                    <tr>
+                        <td class="singleRow" rowspan="2">
+                            4.Dezember <br />
+                            2.Adventsonntag
+                        </td>
+                        <td class="zeiten grey">10 Uhr</td>
+                        <td class="zeiten grey">11.30 Uhr</td>
+                        <td class="zeiten grey">16 Uhr</td>
+                    </tr>
+                    <tr>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                        <td class="bigRow cursive">Br. Karl-M.</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <p id="sign">BITTE WARTEN</p>
+            </div>
+        </div>
+    </body>
 </html>

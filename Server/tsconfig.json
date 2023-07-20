@@ -6,5 +6,5 @@
       "sourceMap": true,
       "outDir": "dist",
     },
-    "include": ["src/**/*", "old/main.js"],
+    "include": ["src/**/*"],
   }

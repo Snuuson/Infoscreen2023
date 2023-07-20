@@ -12,18 +12,18 @@ const updateHolidayTableColors = (holidays: boolean[]) => {
     }
 };
 
-const toggleHoliday = (weekdayIndex: number) => {
+const toggleHoliday = (weekdayIndex: number, controller: Controller) => {
     if (weekdayIndex == -1) {
-        resetHolidays();
+        resetHolidays(controller);
     } else {
-        globalThis.state.holidays[weekdayIndex] = !globalThis.state.holidays[weekdayIndex];
+        controller.holidays[weekdayIndex] = !controller.holidays[weekdayIndex];
     }
-    updateHolidayTableColors(globalThis.state.holidays);
+    updateHolidayTableColors(controller.holidays);
 };
 
-const resetHolidays = () => {
-    for (let i = 0; i < globalThis.state.holidays.length; i++) {
-        globalThis.state.holidays[i] = false;
+const resetHolidays = (controller: Controller) => {
+    for (let i = 0; i < controller.holidays.length; i++) {
+        controller.holidays[i] = false;
     }
 };
 
@@ -62,22 +62,20 @@ const transformHTMLTableToArray = (tableId: number) => {
     return myArray;
 };
 
-class State {
-    holidays: boolean[] = Array(6).fill(false);
-}
-class PostParams{
-    body = ''
-    method='POST'
-    headers= {
+class PostParams {
+    body = '';
+    method = 'POST';
+    headers = {
         'Content-Type': 'application/json; charset=UTF-8',
-    }
-    constructor(bodyString){
-        this.body = bodyString
+    };
+    constructor(bodyString) {
+        this.body = bodyString;
     }
 }
-class Database {
-    pageState: State;
-    serverAddress:string;
+
+class Controller {
+    holidays: boolean[] = Array(6).fill(false);
+    serverAddress: string;
     postParams = {
         body: '',
         method: 'POST',
@@ -85,9 +83,8 @@ class Database {
             'Content-Type': 'application/json; charset=UTF-8',
         },
     };
-    constructor(serverAddress:string,state: State) {
-        this.serverAddress = serverAddress
-        this.pageState = state;
+    constructor(serverAddress: string) {
+        this.serverAddress = serverAddress;
     }
     getHolidays = async () => {
         const URL = `http://${this.serverAddress}/getHolidays`;
@@ -95,19 +92,26 @@ class Database {
         let json_result = await result.json();
         return json_result;
     };
-    updateHolidays = async () => {
-        const URL = `http://${this.serverAddress}/updateHolidays`;
-        const postParams = new PostParams(JSON.stringify(globalThis.state.holidays))
-        fetch(URL, postParams);
-    };
-
     getHTMLTable = async () => {
         const URL = `http://${this.serverAddress}/getHTMLTables`;
         let result = await fetch(URL);
         let json_result = await result.json();
         return json_result;
     };
-    updateHTMLTables = async () => {
+    getHeadLines = async () => {
+        const URL = `http://${this.serverAddress}/getHeadLines`;
+        let result = await fetch(URL);
+        let json_result = await result.json();
+        return json_result;
+    };
+
+    updateHolidays = async (): Promise<Response> => {
+        const URL = `http://${this.serverAddress}/updateHolidays`;
+        const postParams = new PostParams(JSON.stringify(this.holidays));
+        return fetch(URL, postParams);
+    };
+
+    updateHTMLTables = async (): Promise<Response> => {
         let tableArray: string[] = [];
         for (let i = 0; i < 3; i++) {
             tableArray[i] = JSON.stringify(transformHTMLTableToArray(i));
@@ -120,16 +124,10 @@ class Database {
                 'Content-Type': 'application/json; charset=UTF-8',
             },
         };
-        fetch(URL, otherParam);
+        return fetch(URL, otherParam);
     };
 
-    getHeadLines = async () => {
-        const URL = `http://${this.serverAddress}/getHeadLines`;
-        let result = await fetch(URL);
-        let json_result = await result.json();
-        return json_result;
-    };
-    updateHeadLines = async () => {
+    updateHeadLines = async (): Promise<Response> => {
         let lineArray: string[] = [];
         for (let i = 0; i < 2; i++) {
             let line = <HTMLParagraphElement>document.getElementById(`line${i}`);
@@ -143,19 +141,26 @@ class Database {
                 'Content-Type': 'application/json; charset=UTF-8',
             },
         };
-        fetch(URL, otherParam);
+        return fetch(URL, otherParam);
     };
 
     saveDocument = async () => {
-        this.updateHolidays();
-        this.updateHTMLTables();
-        this.updateHeadLines();
+        let promises: Promise<Response>[] = [];
+        promises.push(this.updateHolidays());
+        promises.push(this.updateHTMLTables());
+        promises.push(this.updateHeadLines());
+        await Promise.all(promises).then((res) => {
+            let errors = false;
+            res.forEach((res) => {
+                if (res.status != 200) {
+                    errors = true;
+                }
+            });
+            if (errors == false) {
+                alert('Document has been saved!');
+            }
+        });
     };
 }
 
-globalThis.state = new State();
-globalThis.Database = Database
-globalThis.updateHolidayTableColors = updateHolidayTableColors;
-globalThis.toggleHoliday = toggleHoliday;
-globalThis.insertArrayDataIntoHTMLTable = insertArrayDataIntoHTMLTable;
-export {Database,State,updateHolidayTableColors,toggleHoliday,insertArrayDataIntoHTMLTable};
+export { Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };

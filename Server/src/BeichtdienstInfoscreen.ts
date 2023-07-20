@@ -1,25 +1,24 @@
-import { Database, State, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './main.js';
+import { Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
 import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 import { Message, MessageTypes } from './Message.js';
 
-let state = new State();
-let db = new Database(window.location.host, state);
+let controller = new Controller(window.location.host);
 let ws = new ReconnectingWebSocket('ws://localhost:3000');
 addEventListener('DOMContentLoaded', (event) => {
     ws.onMessage = (httpMessage) => {
         console.log(httpMessage.data);
         let msg = JSON.parse(httpMessage.data);
         if (msg.type == MessageTypes.updateView) {
-            db.getHolidays().then((res) => {
+            controller.getHolidays().then((res) => {
                 updateHolidayTableColors(res);
-                state.holidays = res;
+                controller.holidays = res;
             });
-            db.getHTMLTable().then((json_result) => {
+            controller.getHTMLTable().then((json_result) => {
                 for (let i = 0; i < json_result.length; i++) {
                     insertArrayDataIntoHTMLTable(i, json_result[i]);
                 }
             });
-            db.getHeadLines().then((res) => {
+            controller.getHeadLines().then((res) => {
                 for (let i = 0; i < res.length; i++) {
                     document.getElementById(`line${i}`).innerHTML = res[i];
                 }
@@ -38,16 +37,16 @@ addEventListener('DOMContentLoaded', (event) => {
     };
 
     
-    db.getHolidays().then((res) => {
+    controller.getHolidays().then((res) => {
         updateHolidayTableColors(res);
-        state.holidays = res;
+        controller.holidays = res;
     });
-    db.getHTMLTable().then((json_result) => {
+    controller.getHTMLTable().then((json_result) => {
         for (let i = 0; i < json_result.length; i++) {
             insertArrayDataIntoHTMLTable(i, json_result[i]);
         }
     });
-    db.getHeadLines().then((res) => {
+    controller.getHeadLines().then((res) => {
         for (let i = 0; i < res.length; i++) {
             document.getElementById(`line${i}`).innerHTML = res[i];
         }

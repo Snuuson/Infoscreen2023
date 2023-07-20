@@ -1,8 +1,7 @@
-import {Database,State,insertArrayDataIntoHTMLTable,toggleHoliday,updateHolidayTableColors} from './main.js'
+import {Controller,insertArrayDataIntoHTMLTable,toggleHoliday,updateHolidayTableColors} from './Controller.js'
 
 
-let state = new State()
-let db = new Database(window.location.host,state)
+let controller = new Controller(window.location.host)
 
 addEventListener('DOMContentLoaded', (event) => {
     document.addEventListener('keydown', (e) => {
@@ -10,23 +9,23 @@ addEventListener('DOMContentLoaded', (event) => {
             // Prevent the Save dialog to open
             e.preventDefault();
             // Place your code here
-            db.saveDocument()
+            controller.saveDocument()
         }
     });
     document.getElementById("saveButton").addEventListener("click",()=>{
-        db.saveDocument()
+        controller.saveDocument()
     })
     //db.updateHTMLTables()
-    db.getHolidays().then((res) => {
+    controller.getHolidays().then((res) => {
         updateHolidayTableColors(res);
-        state.holidays = res;
+        controller.holidays = res;
     });
-    db.getHTMLTable().then((json_result) => {
+    controller.getHTMLTable().then((json_result) => {
         for (let i = 0; i < json_result.length; i++) {
             insertArrayDataIntoHTMLTable(i, json_result[i]);
         }
     });
-    db.getHeadLines().then((res) => {
+    controller.getHeadLines().then((res) => {
         for (let i = 0; i < res.length; i++) {
             document.getElementById(`line${i}`).innerHTML = res[i];
         }
@@ -35,10 +34,10 @@ addEventListener('DOMContentLoaded', (event) => {
         let button = document.getElementById(`weekday${i}`)
         button.addEventListener("click",()=>{
             if(i == 6){
-                toggleHoliday(-1)
+                toggleHoliday(-1,controller)
             }
             else{
-                toggleHoliday(i)
+                toggleHoliday(i,controller)
             }
         })
     }
