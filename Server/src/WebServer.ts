@@ -104,7 +104,9 @@ if (!isWin) {
     
     const led = new Gpio(17, 'out');
     const button = new Gpio(4, 'in', 'both');
+    console.log("GPIO active")
     button.watch((err, value) => {
+        console.log(err)    
         console.log(value)
     });
 }
