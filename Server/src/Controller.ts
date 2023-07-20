@@ -24,6 +24,7 @@ const toggleHoliday = (weekdayIndex: number, controller: Controller) => {
 const resetHolidays = (controller: Controller) => {
     for (let i = 0; i < controller.holidays.length; i++) {
         controller.holidays[i] = false;
+        (<HTMLInputElement>document.getElementById(`weekday${i}`)).checked = false
     }
 };
 
@@ -157,7 +158,7 @@ class Controller {
                 }
             });
             if (errors == false) {
-                alert('Document has been saved!');
+                alert('Dokument wurde gespeichert.');
             }
         });
     };

@@ -19,6 +19,9 @@ addEventListener('DOMContentLoaded', (event) => {
     controller.getHolidays().then((res) => {
         updateHolidayTableColors(res);
         controller.holidays = res;
+        res.forEach((holiday:boolean,index:number) => {
+            (<HTMLInputElement>document.getElementById(`weekday${index}`)).checked = holiday
+        });
     });
     controller.getHTMLTable().then((json_result) => {
         for (let i = 0; i < json_result.length; i++) {

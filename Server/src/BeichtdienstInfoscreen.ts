@@ -3,7 +3,7 @@ import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 import { Message, MessageTypes } from './Message.js';
 
 let controller = new Controller(window.location.host);
-let ws = new ReconnectingWebSocket('ws://localhost:3000');
+let ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
 addEventListener('DOMContentLoaded', (event) => {
     ws.onMessage = (httpMessage) => {
         console.log(httpMessage.data);
