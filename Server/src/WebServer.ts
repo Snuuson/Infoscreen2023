@@ -5,6 +5,7 @@ import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
+import {Gpio} from 'onoff';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -98,6 +99,15 @@ app.use('/src', express.static('src'));
 server.listen(3000, () => {
     console.log('Listening on port :3000');
 });
+var isWin = process.platform === 'win32';
+if (!isWin) {
+    
+    const led = new Gpio(17, 'out');
+    const button = new Gpio(4, 'in', 'both');
+    button.watch((err, value) => {
+        console.log(value)
+    });
+}
 
 //#####Remove#####//
 const randomIntFromInterval = (min, max) => {
