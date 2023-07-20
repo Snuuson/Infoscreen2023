@@ -18,11 +18,21 @@ const handleConnections = (ws, req) => {
         ws.send('Client Disconnected: ');
     });
     setInterval(() => {
-        ws.send('Status ' + randomIntFromInterval(0, 1));
+        const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
+        const json_msg = JSON.stringify(msg);
+        ws.send(json_msg);
     }, 1000);
+    
+};
+const OnModelUpdate = (req,res,next) => {
+    wss.clients.forEach((ws)=>{
+        ws.send(JSON.stringify(MessageFactory.CreateUpdateMessage()))
+    })
+    next()
 };
 
-app.post('/updateHeadLines', jsonParser, (req, res) => {
+
+app.post('/updateHeadLines',OnModelUpdate, jsonParser, (req, res) => {
     try {
         db.updateHeadLines(JSON.stringify(req.body));
         console.log('/updateHeadLines');
@@ -31,7 +41,7 @@ app.post('/updateHeadLines', jsonParser, (req, res) => {
         console.log(error);
     }
 });
-app.post('/updateHTMLTables', jsonParser, (req, res) => {
+app.post('/updateHTMLTables',OnModelUpdate, jsonParser, (req, res) => {
     try {
         let tableArray = req.body;
         for (let i = 0; i < tableArray.length; i++) {
@@ -43,7 +53,7 @@ app.post('/updateHTMLTables', jsonParser, (req, res) => {
         console.log(error);
     }
 });
-app.post('/updateHolidays', jsonParser, (req, res) => {
+app.post('/updateHolidays',OnModelUpdate, jsonParser, (req, res) => {
     try {
         db.updateHolidays(JSON.stringify(req.body));
         console.log('/updateHolidays');
@@ -59,6 +69,7 @@ app.get('/getHolidays', (req, res) => {
     });
     console.log('/getHolidays');
 });
+
 app.get('/getHTMLTables', async (req, res) => {
     let promises: Promise<string>[] = [];
     promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.PreviousSunday));

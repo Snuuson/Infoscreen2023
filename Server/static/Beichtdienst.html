@@ -16,24 +16,41 @@
 
 	</style>
 	<link rel="stylesheet" href="main.css">
-	<script src="jquery-3.1.1.js"></script>
-	<script src="main.js"></script>
-	<script type="module" src="UpdateData.js"></script>
+	<script type="module" src="main.js"></script>
 	<script type="module">
 		import ReconnectingWebSocket from "./ReconnectingWebSocket.js"
+		import {Message,MessageTypes} from "./Message.js"
 		let ws =  new ReconnectingWebSocket("ws://localhost:3000")
-		ws.onMessage = (msg)=>{
-			console.log(msg)
-			let sign = document.getElementById("sign")
-			if(msg.data.split(" ")[1] == 1){
-				sign.innerHTML="BITTE   EINTRETEN";
-				sign.style.backgroundColor = 'green';
+		ws.onMessage = (httpMessage)=>{
+			console.log(httpMessage.data)
+			let msg = JSON.parse(httpMessage.data)
+			if(msg.type == MessageTypes.updateView){
+				db.getHolidays().then((res) => {
+                    updateHolidayTableColors(res);
+                    state.holidays = res;
+                });
+                db.getHTMLTable().then((json_result) => {
+                    for (let i = 0; i < json_result.length; i++) {
+                        insertArrayDataIntoHTMLTable(i, json_result[i]);
+                    }
+                });
+                db.getHeadLines().then((res) => {
+                    for (let i = 0; i < res.length; i++) {
+                        document.getElementById(`line${i}`).innerHTML = res[i];
+                    }
+                });
 			}
-			else{
-				sign.innerHTML="BITTE   WARTEN";
-				sign.style.backgroundColor = '#b534d8';
+			if(msg.type == MessageTypes.status){
+				let sign = document.getElementById("sign")
+				if(msg.value == true){
+					sign.innerHTML="BITTE   EINTRETEN";
+					sign.style.backgroundColor = 'green';
+				}
+				else{
+					sign.innerHTML="BITTE   WARTEN";
+					sign.style.backgroundColor = '#b534d8';
+				}
 			}
-			
 			
 		}
 	</script>
@@ -53,111 +70,7 @@
                         document.getElementById(`line${i}`).innerHTML = res[i];
                     }
                 });
-
 		})
-	</script>
-	<script>
-
-	var d = new Date();
-
-	function timeTable(){
-		var weekday = d.getDay();
-		var hour = d.getHours();
-		var minute = d.getMinutes();
-		console.log("weekday = " + weekday +" hours= " + hour + " minutes= "+ minute);
-		var table = document.getElementById("table2");
-		var myColor = "lightgreen";
-
-		if(weekday == 0){
-		switch(hour){
-			case 10:
-				table.rows[1].cells[0].style.backgroundColor = myColor;
-				break;
-			case 11:
-				if(minute>30){
-				table.rows[1].cells[1].style.backgroundColor = myColor;
-				}
-				break;
-			case 12:
-				if(30>minute){
-				table.rows[1].cells[1].style.backgroundColor = myColor;
-				}
-			case 16:
-				table.rows[1].cells[2].style.backgroundColor = myColor;
-				break;
-
-		}
-
-		}
-		if((hour==9 && minute>30)||hour==10||hour==11){
-		switch(weekday){
-			case 1:
-				table.rows[1].cells[1].style.backgroundColor = myColor;
-				break;
-			case 2:
-				table.rows[2].cells[1].style.backgroundColor = myColor;
-				break;
-			case 3:
-				table.rows[3].cells[1].style.backgroundColor = myColor;
-				break;
-			case 4:
-				table.rows[4].cells[1].style.backgroundColor = myColor;
-				break;
-			case 5:
-				table.rows[5].cells[1].style.backgroundColor = myColor;
-				break;
-			case 6:
-				table.rows[6].cells[1].style.backgroundColor = myColor;
-				break;
-
-			}
-		}
-
-
-		if(hour==15 && minute>30 || hour == 16 || hour == 17){
-		switch(weekday){
-			case 1:
-				table.rows[1].cells[2].style.backgroundColor = myColor;
-				break;
-			case 2:
-				table.rows[2].cells[2].style.backgroundColor = myColor;
-				break;
-			case 3:
-				table.rows[3].cells[2].style.backgroundColor = myColor;
-				break;
-			case 4:
-				table.rows[4].cells[2].style.backgroundColor = myColor;
-				break;
-			case 5:
-				table.rows[5].cells[2].style.backgroundColor = myColor;
-				break;
-			case 6:
-				table.rows[6].cells[2].style.backgroundColor = myColor;
-				break;
-
-			}
-		}
-	}
-
-	$( document ).ready(function() {
-	    getTable('table1');
-		getTable('table2');
-		getTable('table3');
-		getLine('line1');
-		getLine('line2');
-		getFeiertagsObj();
-		setInterval(function(){getStatus()}, 500);
-		setInterval(function(){getTable('table1');
-		getTable('table2');
-		getTable('table3');
-		getLine('line1');
-		getLine('line2');
-		getFeiertagsObj();
-		//timeTable();
-
-		}, 500);
-	});
-
 	</script>
 </head>
 <body>

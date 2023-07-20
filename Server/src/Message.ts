@@ -1,15 +1,13 @@
 
 interface Message {
     type: MessageTypes;
-    value: string;
-    tableId: number;
+    value: any;
 }
 class Message implements Message {
     type: MessageTypes;
-    value: string;
-    tableId: number;
+    value: any;
 
-    constructor(type: MessageTypes, value: string) {
+    constructor(type: MessageTypes, value: any) {
         this.type = type;
         this.value = value;
     }
@@ -17,23 +15,18 @@ class Message implements Message {
 
 enum MessageTypes {
     status,
-    table,
-    holiday
+    updateView
 }
 
 class MessageFactory {
-    public static CreateStatusMessage = (json_string) => {
-        return new Message(MessageTypes.status, json_string);
+    public static CreateStatusMessage = (status:boolean) => {
+        return new Message(MessageTypes.status, status);
     };
-    public static CreateTableMessage = (tableId, json_string) => {
-        let message = new Message(MessageTypes.table, json_string);
-        message.tableId = tableId;
-        return message;
-    };
+    public static CreateUpdateMessage = () => {
+        return new Message(MessageTypes.updateView,"Please Update View")
+    }   
 
-    public static CreateHolidayMessage = (json_string) => {
-        return new Message(MessageTypes.holiday, json_string);
-    };
+    
 }
 
 export { MessageFactory, MessageTypes, Message };
