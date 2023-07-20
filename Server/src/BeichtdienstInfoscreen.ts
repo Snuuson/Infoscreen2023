@@ -36,7 +36,10 @@ addEventListener('DOMContentLoaded', (event) => {
         }
     };
 
-    
+    let sign = document.getElementById('sign');
+    sign.innerHTML = 'BITTE   WARTEN';
+    sign.style.backgroundColor = '#b534d8';
+
     controller.getHolidays().then((res) => {
         updateHolidayTableColors(res);
         controller.holidays = res;

@@ -105,7 +105,7 @@ if (!isWin) {
     const led = new Gpio(17, 'out');
     const button = new Gpio(4, 'in', 'both');
     console.log("GPIO active")
-    let currentValue = 0
+    let currentValue = 1
     button.watch((err, value:number) => {
         
         if(err){
@@ -113,7 +113,7 @@ if (!isWin) {
         }   
         if(currentValue != value){
             wss.clients.forEach((ws)=>{
-                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(1===value)))
+                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0===value)))
             })
             //Comment from win
             currentValue = value;
