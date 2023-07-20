@@ -1,17 +1,17 @@
 import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-const app: Express = express();
 import { WebSocketServer } from 'ws';
 import http from 'http';
+import db from './InfoscreenDB.js';
+import { HTML_Table_IDs } from './InfoscreenDB.js';
+import {MessageFactory} from './Message.js';
+const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const jsonParser = bodyParser.json();
-import db from './InfoscreenDB.js';
-import { HTML_Table_IDs } from './InfoscreenDB.js';
-import { Message, MessageFactory, MessageTypes } from './Message.js';
 
 const handleConnections = (ws, req) => {
-    console.log('A new client connected');
+    console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
     ws.on('message', (messageString) => {});
     ws.on('close', () => {
