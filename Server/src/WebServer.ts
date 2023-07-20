@@ -5,7 +5,7 @@ import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
-import {Gpio} from 'onoff';
+import {BinaryValue, Gpio} from 'onoff';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -102,11 +102,11 @@ server.listen(3000, () => {
 var isWin = process.platform === 'win32';
 if (!isWin) {
     
-    const led = new Gpio(17, 'out');
-    const button = new Gpio(4, 'in', 'both');
+    const outPin = new Gpio(17, 'out');
+    const status_switch = new Gpio(4, 'in', 'both',{debounceTimeout: 10});
     console.log("GPIO active")
     let currentValue = 1
-    button.watch((err, value:number) => {
+    status_switch.watch((err, value:BinaryValue) => {
         
         if(err){
             console.log(err)
@@ -115,11 +115,17 @@ if (!isWin) {
             wss.clients.forEach((ws)=>{
                 ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0===value)))
             })
-            //Comment from win
+            outPin.writeSync(value);
             currentValue = value;
         }
         console.log(value)
     });
+
+    process.on('SIGINT', _ => {
+        outPin.unexport();
+        status_switch.unexport();
+        console.log("Closed all GPIO pins")
+      });
 }
 
 //#####Remove#####//
