@@ -16,62 +16,7 @@
 
 	</style>
 	<link rel="stylesheet" href="main.css">
-	<script type="module" src="main.js"></script>
-	<script type="module">
-		import ReconnectingWebSocket from "./ReconnectingWebSocket.js"
-		import {Message,MessageTypes} from "./Message.js"
-		let ws =  new ReconnectingWebSocket("ws://localhost:3000")
-		ws.onMessage = (httpMessage)=>{
-			console.log(httpMessage.data)
-			let msg = JSON.parse(httpMessage.data)
-			if(msg.type == MessageTypes.updateView){
-				db.getHolidays().then((res) => {
-                    updateHolidayTableColors(res);
-                    state.holidays = res;
-                });
-                db.getHTMLTable().then((json_result) => {
-                    for (let i = 0; i < json_result.length; i++) {
-                        insertArrayDataIntoHTMLTable(i, json_result[i]);
-                    }
-                });
-                db.getHeadLines().then((res) => {
-                    for (let i = 0; i < res.length; i++) {
-                        document.getElementById(`line${i}`).innerHTML = res[i];
-                    }
-                });
-			}
-			if(msg.type == MessageTypes.status){
-				let sign = document.getElementById("sign")
-				if(msg.value == true){
-					sign.innerHTML="BITTE   EINTRETEN";
-					sign.style.backgroundColor = 'green';
-				}
-				else{
-					sign.innerHTML="BITTE   WARTEN";
-					sign.style.backgroundColor = '#b534d8';
-				}
-			}
-			
-		}
-	</script>
-	<script>
-		addEventListener('DOMContentLoaded', (event) => {
-				db.getHolidays().then((res) => {
-                    updateHolidayTableColors(res);
-                    state.holidays = res;
-                });
-                db.getHTMLTable().then((json_result) => {
-                    for (let i = 0; i < json_result.length; i++) {
-                        insertArrayDataIntoHTMLTable(i, json_result[i]);
-                    }
-                });
-                db.getHeadLines().then((res) => {
-                    for (let i = 0; i < res.length; i++) {
-                        document.getElementById(`line${i}`).innerHTML = res[i];
-                    }
-                });
-		})
-	</script>
+	<script type="module" src="Beichtdienst.js"></script>
 </head>
 <body>
 	<div id="masterDiv">

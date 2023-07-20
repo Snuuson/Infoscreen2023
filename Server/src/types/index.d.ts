@@ -5,7 +5,7 @@ interface State {
 }
 declare global {
     interface globalThis {
-        db: any;
+        Database: any;
         state: State;
         updateHolidayTableColors: CallableFunction
         toggleHoliday: CallableFunction

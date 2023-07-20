@@ -77,6 +77,7 @@ class PostParams{
 }
 class Database {
     pageState: State;
+    serverAddress:string;
     postParams = {
         body: '',
         method: 'POST',
@@ -84,23 +85,24 @@ class Database {
             'Content-Type': 'application/json; charset=UTF-8',
         },
     };
-    constructor(state: State) {
+    constructor(serverAddress:string,state: State) {
+        this.serverAddress = serverAddress
         this.pageState = state;
     }
     getHolidays = async () => {
-        const URL = 'http://localhost:3000/getHolidays';
+        const URL = `http://${this.serverAddress}/getHolidays`;
         let result = await fetch(URL);
         let json_result = await result.json();
         return json_result;
     };
     updateHolidays = async () => {
-        const URL = 'http://localhost:3000/updateHolidays';
+        const URL = `http://${this.serverAddress}/updateHolidays`;
         const postParams = new PostParams(JSON.stringify(globalThis.state.holidays))
         fetch(URL, postParams);
     };
 
     getHTMLTable = async () => {
-        const URL = 'http://localhost:3000/getHTMLTables';
+        const URL = `http://${this.serverAddress}/getHTMLTables`;
         let result = await fetch(URL);
         let json_result = await result.json();
         return json_result;
@@ -110,7 +112,7 @@ class Database {
         for (let i = 0; i < 3; i++) {
             tableArray[i] = JSON.stringify(transformHTMLTableToArray(i));
         }
-        const URL = 'http://localhost:3000/updateHTMLTables';
+        const URL = `http://${this.serverAddress}/updateHTMLTables`;
         const otherParam = {
             body: JSON.stringify(tableArray),
             method: 'POST',
@@ -122,7 +124,7 @@ class Database {
     };
 
     getHeadLines = async () => {
-        const URL = 'http://localhost:3000/getHeadLines';
+        const URL = `http://${this.serverAddress}/getHeadLines`;
         let result = await fetch(URL);
         let json_result = await result.json();
         return json_result;
@@ -133,7 +135,7 @@ class Database {
             let line = <HTMLParagraphElement>document.getElementById(`line${i}`);
             lineArray.push(line.innerHTML);
         }
-        const URL = 'http://localhost:3000/updateHeadLines';
+        const URL = `http://${this.serverAddress}/updateHeadLines`;
         const otherParam = {
             body: JSON.stringify(lineArray),
             method: 'POST',
@@ -152,8 +154,8 @@ class Database {
 }
 
 globalThis.state = new State();
-globalThis.db = new Database(globalThis.state);
+globalThis.Database = Database
 globalThis.updateHolidayTableColors = updateHolidayTableColors;
 globalThis.toggleHoliday = toggleHoliday;
 globalThis.insertArrayDataIntoHTMLTable = insertArrayDataIntoHTMLTable;
-export {};
+export {Database,State,updateHolidayTableColors,toggleHoliday,insertArrayDataIntoHTMLTable};
