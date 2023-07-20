@@ -6,6 +6,8 @@ import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
 import {BinaryValue, Gpio} from 'onoff';
+import isPi from 'detect-rpi';
+
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -99,8 +101,8 @@ app.use('/src', express.static('src'));
 server.listen(3000, () => {
     console.log('Listening on port :3000');
 });
-var isWin = process.platform === 'win32';
-if (!isWin) {
+
+if (isPi()) {
     
     const outPin = new Gpio(17, 'out');
     const status_switch = new Gpio(4, 'in', 'both',{debounceTimeout: 10});
