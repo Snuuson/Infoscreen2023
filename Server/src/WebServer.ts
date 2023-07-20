@@ -115,6 +115,7 @@ if (!isWin) {
             wss.clients.forEach((ws)=>{
                 ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(1===value)))
             })
+            //Comment from win
             currentValue = value;
         }
         console.log(value)
