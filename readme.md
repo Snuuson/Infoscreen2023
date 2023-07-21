@@ -40,8 +40,7 @@ static ip_address=192.168.1.2/24
 
 #### Run Chromium Browser on startup
 - To hide the mouse cursor install `sudo apt-get install unclutter`
-- Create file at `~/.config/lxsession/LXDE-pi/autostart` without sudo (belongs to the user)
-- Insert:
+- Append to file at `/etc/xdg/lxsession/LXDE-pi/autostart`
  ```
 @unclutter -idle 0.1 -root
 @xscreensaver -no-splash		#Turns the screensaver off
@@ -93,8 +92,7 @@ static ip_address=192.168.1.3/24
 ```
 
 #### Run Chromium Browser on Startup and Set AlwaysOn Display
-- Create file at `~/.config/lxsession/LXDE-pi/autostart` without sudo (belongs to the user)
-- Insert:
+- Append to file at `/etc/xdg/lxsession/LXDE-pi/autostart`
  ```
 @unclutter -idle 0.1 -root
 @xscreensaver -no-splash		#Turns the screensaver off
@@ -107,13 +105,15 @@ static ip_address=192.168.1.3/24
 
 ```mermaid
 sequenceDiagram
-Infoscreen ->>+Server: Request tables
+Infoscreen -->>+Server: Request tables
 Server->>-Infoscreen: Sends tables
 Switch ->>+Server: State Changed
 Server ->>-Infoscreen: State Changed
-Human->>+Server: Update table
+Human->>+Server: Update tables
 Note  right of  Server:  Server saves table to database
-Server->>-Infoscreen: Sends tables
+Server-->>Infoscreen: New Tables available 
+Infoscreen -->>Server: Request Tables
+Server ->>- Infoscreen: Sends Tables 
 ```
 
 
