@@ -75,8 +75,8 @@ app.post('/updateHolidays', jsonParser, async (req, res) => {
 
 app.get('/getAll', async (req, res) => {
     let data = {
-        Holidays: '',
-        HeadLines: '',
+        Holidays: [],
+        HeadLines: [],
         HTMLTables: [],
     };
     data.Holidays = JSON.parse(await db.getHolidaysAsJsonString());
