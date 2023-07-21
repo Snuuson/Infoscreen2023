@@ -88,27 +88,27 @@ class Controller {
     }
     getHolidays = async () => {
         const URL = `http://${this.serverAddress}/getHolidays`;
-        let result = await fetch(URL);
-        let json_result = await result.json();
-        return json_result;
+        let respones = await fetch(URL);
+        let result = await respones.json();
+        return result;
     };
     getHTMLTable = async () => {
         const URL = `http://${this.serverAddress}/getHTMLTables`;
-        let result = await fetch(URL);
-        let json_result = await result.json();
-        return json_result;
+        let respones = await fetch(URL);
+        let result = await respones.json();
+        return result;
     };
     getHeadLines = async () => {
         const URL = `http://${this.serverAddress}/getHeadLines`;
-        let result = await fetch(URL);
-        let json_result = await result.json();
-        return json_result;
+        let respones = await fetch(URL);
+        let result = await respones.json();
+        return result;
     };
     getAll = async () => {
         const URL = `http://${this.serverAddress}/getAll`;
-        let result = await fetch(URL);
-        let json_result = await result.json();
-        return json_result;
+        let respones = await fetch(URL);
+        let result = await respones.json();
+        return result;
     };
 
     updateHolidays = async (): Promise<Response> => {
