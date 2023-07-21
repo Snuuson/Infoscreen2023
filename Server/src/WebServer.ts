@@ -5,7 +5,6 @@ import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
-import {BinaryValue, Gpio} from 'onoff';
 import isPi from 'detect-rpi';
 
 const app: Express = express();
@@ -95,6 +94,7 @@ wss.on('connection', (ws, req) => {
 
 //Configure Static routes
 app.use(express.static('static'));
+app.use(express.static('static'));
 app.use(express.static('dist'));
 app.use('/src', express.static('src'));
 
@@ -103,12 +103,12 @@ server.listen(3000, () => {
 });
 
 if (isPi()) {
-    
+    const Gpio = require('onoff')
     const outPin = new Gpio(17, 'out');
     const status_switch = new Gpio(4, 'in', 'both',{debounceTimeout: 10});
     console.log("GPIO active")
     let currentValue = 1
-    status_switch.watch((err, value:BinaryValue) => {
+    status_switch.watch((err, value) => {
         
         if(err){
             console.log(err)
