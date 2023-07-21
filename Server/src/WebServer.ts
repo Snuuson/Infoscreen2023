@@ -19,11 +19,13 @@ const handleConnections = (ws, req) => {
     ws.on('close', () => {
         ws.send('Client Disconnected: ');
     });
-    // setInterval(() => {
-    //     const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
-    //     const json_msg = JSON.stringify(msg);
-    //     ws.send(json_msg);
-    // }, 1000);
+    if (!isPi()) {
+        setInterval(() => {
+            const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
+            const json_msg = JSON.stringify(msg);
+            ws.send(json_msg);
+        }, 10000);
+    }
 };
 const OnModelUpdate = () => {
     wss.clients.forEach((ws) => {
