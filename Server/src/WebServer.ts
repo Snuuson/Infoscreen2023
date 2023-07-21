@@ -88,7 +88,9 @@ app.post('/updateHolidays', jsonParser, async (req, res) => {
     }
     console.log('/updateHolidays');
 });
-
+app.get('/', (req,res)=>{
+    res.sendFile("Beichtdienst.html",{root:"static"})
+})
 app.get('/getAll', async (req, res) => {
     let data = {
         Holidays: [],
@@ -159,9 +161,7 @@ app.use(express.static('static'));
 app.use(express.static('dist'));
 app.use('/src', express.static('src'));
 
-server.listen(3000, () => {
-    console.log('Listening on port :3000');
-});
+
 
 if (isPi()) {
     const Gpio = require('onoff');
@@ -195,3 +195,8 @@ const randomIntFromInterval = (min, max) => {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+
+server.listen(3000, () => {
+    console.log('Listening on port :3000');
+});
