@@ -1,3 +1,5 @@
+import { showPopup } from './Popup.js';
+
 const updateHolidayTableColors = (holidays: boolean[]) => {
     let table = <HTMLTableElement>document.getElementById('table1');
 
@@ -169,18 +171,23 @@ class Controller {
         data.Holidays = this.holidays;
         data.HTMLTables = tableArray;
         const URL = `http://${this.serverAddress}/updateAll`;
+
         return fetch(URL, new PostParams(JSON.stringify(data)));
     };
 
-
     saveDocument = async () => {
-        this.updateAll().then((res) => {
-            if (res.status != 200) {
-                alert('Ein Fehler beim speichern ist aufgetreten');
-            } else {
-                alert('Dokument wurde gespeichert.');
-            }
-        });
+        this.updateAll()
+            .then((res) => {
+                if (res.status === 200) {
+                    showPopup('Dokument wurde gespeichert.', 1.3);
+                } else {
+                    alert('Es ist ein Fehler aufgetreten.');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert('Es ist ein Fehler aufgetreten.');
+            });
     };
 }
 

@@ -1,0 +1,54 @@
+
+.popup {
+    position: absolute;
+    top:30;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(128, 128, 128);
+    
+    height: 50px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    padding: 10px;
+    color:white;
+    font-size: 30px;
+    visibility: hidden;
+
+}
+
+.hide{
+    visibility: hidden;
+    -webkit-animation: fadeOut 0.5s;
+    animation: fadeOut 0.5s
+}
+
+.show {
+    visibility: visible;
+    -webkit-animation: fadeIn 0.3s;
+    animation: fadeIn 0.3s
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    
+    from {opacity: 0.4;top:0}
+    to {opacity: 1;top:30}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0.4;top:0}
+    to {opacity: 1;top:30}
+  }
+
+  @-webkit-keyframes fadeOut {
+    
+      from {opacity: 1;top:30;visibility: visible;}
+      to {opacity: 0.4;top:-100;visibility: hidden}
+  }
+  
+  @keyframes fadeOut {
+    from {opacity: 1;top:30;visibility: visible;}
+      to {opacity: 0.4;top:-100;visibility: hidden}
+  }
