@@ -15,24 +15,32 @@ addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("saveButton").addEventListener("click",()=>{
         controller.saveDocument()
     })
-    //db.updateHTMLTables()
-    controller.getHolidays().then((res) => {
-        updateHolidayTableColors(res);
-        controller.holidays = res;
-        res.forEach((holiday:boolean,index:number) => {
+    //Uncomment next line if you want to reset db to default values
+    //controller.saveDocument()
+    
+    controller.getAll().then((res)=>{
+        console.log(`getAll result from database:`)
+        console.log(res)
+        //Insert Holidays
+        updateHolidayTableColors(res.Holidays);
+        controller.holidays = res.Holidays;
+        res.Holidays.forEach((holiday:boolean,index:number) => {
             (<HTMLInputElement>document.getElementById(`weekday${index}`)).checked = holiday
         });
-    });
-    controller.getHTMLTable().then((json_result) => {
-        for (let i = 0; i < json_result.length; i++) {
-            insertArrayDataIntoHTMLTable(i, json_result[i]);
+
+        //Insert Tables
+        for (let i = 0; i < res.HTMLTables.length; i++) {
+            insertArrayDataIntoHTMLTable(i, res.HTMLTables[i]);
         }
-    });
-    controller.getHeadLines().then((res) => {
+
+        //Insert Headlines
         for (let i = 0; i < res.length; i++) {
             document.getElementById(`line${i}`).innerHTML = res[i];
         }
-    });
+    })
+    
+
+    //Asigning EventListeners for Holiday RadioButtons
     for(let i = 0; i < 7;i++){
         let button = document.getElementById(`weekday${i}`)
         button.addEventListener("click",()=>{

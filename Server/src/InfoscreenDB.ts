@@ -7,13 +7,29 @@ enum HTML_Table_IDs {
     ComingSunday,
 }
 class InfoscreenDB {
-    
     filename = 'Infoscreen.db';
-    
 
     public async updateHeadLines(json_string: string) {
         try {
             let sql = `UPDATE Head_Lines SET json_data = '${json_string}' WHERE id = 0`;
+            const db = await this.GetDB();
+            await db.run(sql);
+            await db.close();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    public async updateHTMLTable(id: number, json_string: string) {
+        let sql = `UPDATE HTML_Tables SET json_data = '${json_string}' WHERE id =${id}`;
+        const db = await this.GetDB();
+        let res: ISqlite.RunResult<Statement> = await db.run(sql);
+        await db.close();
+    }
+
+    public async updateHolidays(json_string: string) {
+        try {
+            let sql = `UPDATE Holidays SET json_data = '${json_string}' WHERE id = 0`;
             const db = await this.GetDB();
             await db.run(sql);
             await db.close();
@@ -35,17 +51,6 @@ class InfoscreenDB {
         return res;
     }
 
-    public async updateHolidays(json_string: string) {
-        try {
-            let sql = `UPDATE Holidays SET json_data = '${json_string}' WHERE id = 0`;
-            const db = await this.GetDB();
-            await db.run(sql);
-            await db.close();
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     public async getHolidaysAsJsonString(): Promise<string> {
         let res = '';
         try {
@@ -57,13 +62,6 @@ class InfoscreenDB {
             console.log(error);
         }
         return res;
-    }
-
-    public async updateHTMLTable(id: number, json_string: string) {
-        let sql = `UPDATE HTML_Tables SET json_data = '${json_string}' WHERE id =${id}`;
-        const db = await this.GetDB();
-        let res: ISqlite.RunResult<Statement> = await db.run(sql);
-        await db.close();
     }
 
     public async getHTMLTableAsJsonString(id: number): Promise<string> {
@@ -87,5 +85,5 @@ class InfoscreenDB {
         return db;
     }
 }
-export {HTML_Table_IDs}
+export { HTML_Table_IDs };
 export default new InfoscreenDB();

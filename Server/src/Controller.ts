@@ -28,8 +28,7 @@ const resetHolidays = (controller: Controller) => {
     }
 };
 
-const insertArrayDataIntoHTMLTable = (tableId: number, json_string: string) => {
-    let data = JSON.parse(json_string);
+const insertArrayDataIntoHTMLTable = (tableId: number, data:string[][]) => {
     let maxRowLength = 0;
     for (let i = 0; i < data.length; i++) {
         maxRowLength = data[i].length > maxRowLength ? data[i].length : maxRowLength;
@@ -101,6 +100,12 @@ class Controller {
     };
     getHeadLines = async () => {
         const URL = `http://${this.serverAddress}/getHeadLines`;
+        let result = await fetch(URL);
+        let json_result = await result.json();
+        return json_result;
+    };
+    getAll = async () => {
+        const URL = `http://${this.serverAddress}/getAll`;
         let result = await fetch(URL);
         let json_result = await result.json();
         return json_result;
