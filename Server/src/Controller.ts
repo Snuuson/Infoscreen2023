@@ -90,28 +90,26 @@ class Controller {
     }
     getHolidays = async () => {
         const URL = `http://${this.serverAddress}/getHolidays`;
-        let respones = await fetch(URL);
-        let result = await respones.json();
-        return result;
+        return await this.get(URL);
     };
     getHTMLTable = async () => {
         const URL = `http://${this.serverAddress}/getHTMLTables`;
-        let respones = await fetch(URL);
-        let result = await respones.json();
-        return result;
+        return await this.get(URL);
     };
     getHeadLines = async () => {
         const URL = `http://${this.serverAddress}/getHeadLines`;
-        let respones = await fetch(URL);
-        let result = await respones.json();
-        return result;
+        return await this.get(URL);
     };
     getAll = async () => {
         const URL = `http://${this.serverAddress}/getAll`;
+        return await this.get(URL);
+    };
+
+    get = async (URL:string):Promise<any> => {
         let respones = await fetch(URL);
         let result = await respones.json();
         return result;
-    };
+    }
 
     updateHolidays = async (): Promise<Response> => {
         const URL = `http://${this.serverAddress}/updateHolidays`;
@@ -125,14 +123,7 @@ class Controller {
             tableArray[i] = JSON.stringify(transformHTMLTableToArray(i));
         }
         const URL = `http://${this.serverAddress}/updateHTMLTables`;
-        const otherParam = {
-            body: JSON.stringify(tableArray),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            },
-        };
-        return fetch(URL, otherParam);
+        return fetch(URL, new PostParams(JSON.stringify(tableArray)));
     };
 
     updateHeadLines = async (): Promise<Response> => {
@@ -142,14 +133,7 @@ class Controller {
             lineArray.push(line.innerHTML);
         }
         const URL = `http://${this.serverAddress}/updateHeadLines`;
-        const otherParam = {
-            body: JSON.stringify(lineArray),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            },
-        };
-        return fetch(URL, otherParam);
+        return fetch(URL, new PostParams(JSON.stringify(lineArray)));
     };
 
     updateAll = async (): Promise<Response> => {

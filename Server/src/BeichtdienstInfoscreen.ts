@@ -22,6 +22,13 @@ let updateView = (dataArray)=>{
     
 }
 addEventListener('DOMContentLoaded', (event) => {
+    ws.onOpen = ()=>{
+        controller.getAll().then((res)=>{
+            console.log(`getAll result from database:`)
+            console.log(res)
+            updateView(res)
+        })
+    }
     ws.onMessage = (httpMessage) => {
         console.log(httpMessage.data);
         let msg = JSON.parse(httpMessage.data);

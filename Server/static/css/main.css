@@ -32,6 +32,7 @@
 		text-align:center;
 		width:90%;
 		font-size:20px;
+		cursor: text;
 	}
 	table {
 	    margin-top:60px;	
@@ -40,6 +41,7 @@
 		margin-left: auto;
 		margin-right: auto;
 		width:95%;
+		cursor: text;
 		
 	}
 	td{
@@ -85,12 +87,12 @@
 		top:10px;
 		left:10px;
 		text-align:center;
-		
 		margin:auto;
 	}
 	#saveButton{
 	width:120px;
 	height:60px;
+	border-radius: 3px;
 	}
 	.cursive{
 	font-style:italic;
