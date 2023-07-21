@@ -2,7 +2,7 @@
 #MY ignores
 dev/
 build/
-
+Server/Infoscreen.db
 
 
 #####
@@ -138,3 +138,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
