@@ -31,6 +31,14 @@ const OnModelUpdate = () => {
     });
 };
 
+app.post('updateAll', jsonParser, async (req, res) => {
+    try {
+        console.log(req.body)
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 app.post('/updateHeadLines', jsonParser, async (req, res) => {
     try {
         await db.updateHeadLines(JSON.stringify(req.body));
@@ -63,6 +71,27 @@ app.post('/updateHolidays', jsonParser, async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+});
+
+app.get('/getAll', async (req, res) => {
+    let data = {
+        Holidays: '',
+        HeadLines: '',
+        HTMLTables: [],
+    };
+    data.Holidays = JSON.parse(await db.getHolidaysAsJsonString());
+    data.HeadLines = JSON.parse(await db.getHeadLinesAsJsonString());
+    let promises: Promise<string>[] = [];
+    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.PreviousSunday));
+    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.BusinessDays));
+    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.ComingSunday));
+    let HTMLTablesAsJsonStrings = await Promise.all(promises);
+    const HTMLTablesAsArrays = HTMLTablesAsJsonStrings.map((json_string) => {
+        return JSON.parse(json_string);
+    });
+    data.HTMLTables = HTMLTablesAsArrays;
+    let dataAsJsonString = JSON.stringify(data);
+    res.send(dataAsJsonString);
 });
 
 app.get('/getHolidays', (req, res) => {
@@ -103,31 +132,30 @@ server.listen(3000, () => {
 });
 
 if (isPi()) {
-    const Gpio = require('onoff')
+    const Gpio = require('onoff');
     const outPin = new Gpio(17, 'out');
-    const status_switch = new Gpio(4, 'in', 'both',{debounceTimeout: 10});
-    console.log("GPIO active")
-    let currentValue = 1
+    const status_switch = new Gpio(4, 'in', 'both', { debounceTimeout: 10 });
+    console.log('GPIO active');
+    let currentValue = 1;
     status_switch.watch((err, value) => {
-        
-        if(err){
-            console.log(err)
-        }   
-        if(currentValue != value){
-            wss.clients.forEach((ws)=>{
-                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0===value)))
-            })
+        if (err) {
+            console.log(err);
+        }
+        if (currentValue != value) {
+            wss.clients.forEach((ws) => {
+                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0 === value)));
+            });
             outPin.writeSync(value);
             currentValue = value;
         }
-        console.log(value)
+        console.log(value);
     });
 
-    process.on('SIGINT', _ => {
+    process.on('SIGINT', (_) => {
         outPin.unexport();
         status_switch.unexport();
-        console.log("Closed all GPIO pins")
-      });
+        console.log('Closed all GPIO pins');
+    });
 }
 
 //#####Remove#####//
