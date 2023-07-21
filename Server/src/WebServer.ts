@@ -6,7 +6,7 @@ import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
 import isPi from 'detect-rpi';
-
+import { Gpio,BinaryValue } from 'onoff';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -88,9 +88,9 @@ app.post('/updateHolidays', jsonParser, async (req, res) => {
     }
     console.log('/updateHolidays');
 });
-app.get('/', (req,res)=>{
-    res.sendFile("Beichtdienst.html",{root:"static"})
-})
+app.get('/', (req, res) => {
+    res.sendFile('Beichtdienst.html', { root: 'static' });
+});
 app.get('/getAll', async (req, res) => {
     let data = {
         Holidays: [],
@@ -161,17 +161,14 @@ app.use(express.static('static'));
 app.use(express.static('dist'));
 app.use('/src', express.static('src'));
 
-
-
 if (isPi()) {
-    const Gpio = require('onoff');
     const outPin = new Gpio(17, 'out');
     const status_switch = new Gpio(4, 'in', 'both', { debounceTimeout: 10 });
     console.log('GPIO active');
     let currentValue = 1;
-    status_switch.watch((err, value) => {
+    status_switch.watch((err:Error, value:BinaryValue) => {
         if (err) {
-            console.log(err);
+            console.log(err.message);
         }
         if (currentValue != value) {
             wss.clients.forEach((ws) => {
@@ -195,7 +192,6 @@ const randomIntFromInterval = (min, max) => {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
-
 
 server.listen(3000, () => {
     console.log('Listening on port :3000');
