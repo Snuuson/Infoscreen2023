@@ -176,6 +176,10 @@ class Controller {
     };
 
     saveDocument = async () => {
+        document.body.style.cursor = 'wait';
+        let saveButton = (<HTMLInputElement>document.getElementById("saveButton"))
+        saveButton.disabled = true;
+        saveButton.style.cursor = 'wait'
         this.updateAll()
             .then((res) => {
                 if (res.status === 200) {
@@ -183,10 +187,16 @@ class Controller {
                 } else {
                     alert('Es ist ein Fehler aufgetreten.');
                 }
+                document.body.style.cursor = 'default';
+                saveButton.disabled = false;
+                saveButton.style.cursor = 'default'
             })
             .catch((error) => {
                 console.log(error);
                 alert('Es ist ein Fehler aufgetreten.');
+                document.body.style.cursor = 'default';
+                saveButton.disabled = false;
+                saveButton.style.cursor = 'default'
             });
     };
 }
