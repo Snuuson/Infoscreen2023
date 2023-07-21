@@ -18,6 +18,7 @@
 - Make sure to install 64bit version
 -- Used *Raspberry Pi Imager* 
 -- Set Hostname and Username to  "Infoscreen" and Password to "1234"
+-- Turn on AutoLogin in Raspberry Pi Configuration (UI)
 - run: `sudo apt-get update && sudo apt-get upgrade`
 - install nodejs: `sudo apt-get install nodejs`
 - install npm: `sudo apt-get install npm`
@@ -78,6 +79,7 @@ ExecStart= node /home/Infoscreen/Infoscreen2023/Server/dist/WebServer.js
 - Make sure to install 64bit version
 -- Used *Raspberry Pi Imager* 
 -- Set Hostname and Username to  "Infoscreen" and Password to "1234"
+-- Turn on AutoLogin in Raspberry Pi Configuration (UI)
 - run: `sudo apt-get update && sudo apt-get upgrade`
 - To hide the mouse cursor install `sudo apt-get install unclutter`
 
@@ -94,6 +96,7 @@ static ip_address=192.168.1.3/24
 - Create file at `~/.config/lxsession/LXDE-pi/autostart` without sudo (belongs to the user)
 - Insert:
  ```
+@unclutter -idle 0.1 -root
 @xscreensaver -no-splash		#Turns the screensaver off
 @xset s off						#Disable screen saver blanking
 @xset -dpms						#Display Power Management Signaling off
