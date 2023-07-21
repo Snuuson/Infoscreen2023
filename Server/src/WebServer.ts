@@ -31,23 +31,33 @@ const OnModelUpdate = () => {
     });
 };
 
-app.post('updateAll', jsonParser, async (req, res) => {
+app.post('/updateAll', jsonParser, async (req, res) => {
     try {
-        console.log(req.body)
+        await db.updateHolidays(JSON.stringify(req.body.Holidays));
+        await db.updateHeadLines(JSON.stringify(req.body.HeadLines));
+        for (let i = 0; i < req.body.HTMLTables.length; i++) {
+            await db.updateHTMLTable(i, JSON.stringify(req.body.HTMLTables[i]));
+        }
+        res.sendStatus(200);
+        OnModelUpdate();
     } catch (error) {
         console.log(error);
+        res.sendStatus(500);
     }
+    console.log('/updateAll');
 });
 
 app.post('/updateHeadLines', jsonParser, async (req, res) => {
     try {
         await db.updateHeadLines(JSON.stringify(req.body));
-        OnModelUpdate();
-        console.log('/updateHeadLines');
+
         res.sendStatus(200);
+        OnModelUpdate();
     } catch (error) {
         console.log(error);
+        res.sendStatus(500);
     }
+    console.log('/updateHeadLines');
 });
 app.post('/updateHTMLTables', jsonParser, async (req, res) => {
     try {
@@ -56,21 +66,25 @@ app.post('/updateHTMLTables', jsonParser, async (req, res) => {
             await db.updateHTMLTable(i, tableArray[i]);
         }
         OnModelUpdate();
-        console.log('/updateHTMLTables');
+
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
+        res.sendStatus(500);
     }
+    console.log('/updateHTMLTables');
 });
 app.post('/updateHolidays', jsonParser, async (req, res) => {
     try {
         await db.updateHolidays(JSON.stringify(req.body));
         OnModelUpdate();
-        console.log('/updateHolidays');
+
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
+        res.sendStatus(500);
     }
+    console.log('/updateHolidays');
 });
 
 app.get('/getAll', async (req, res) => {
@@ -92,29 +106,45 @@ app.get('/getAll', async (req, res) => {
     data.HTMLTables = HTMLTablesAsArrays;
     let dataAsJsonString = JSON.stringify(data);
     res.send(dataAsJsonString);
+    console.log('/getAll');
 });
 
 app.get('/getHolidays', (req, res) => {
-    db.getHolidaysAsJsonString().then((holidayString) => {
-        res.send(holidayString);
-    });
+    try {
+        db.getHolidaysAsJsonString().then((holidayString) => {
+            res.send(holidayString);
+        });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
     console.log('/getHolidays');
 });
 
 app.get('/getHTMLTables', async (req, res) => {
-    let promises: Promise<string>[] = [];
-    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.PreviousSunday));
-    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.BusinessDays));
-    promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.ComingSunday));
-    let result = await Promise.all(promises);
-    res.send(JSON.stringify(result));
+    try {
+        let promises: Promise<string>[] = [];
+        promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.PreviousSunday));
+        promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.BusinessDays));
+        promises.push(db.getHTMLTableAsJsonString(HTML_Table_IDs.ComingSunday));
+        let result = await Promise.all(promises);
+        res.send(JSON.stringify(result));
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
     console.log('/getHTMLTables');
 });
 app.get('/getHeadLines', (req, res) => {
-    db.getHeadLinesAsJsonString().then((headLinesString) => {
-        res.send(headLinesString);
-        console.log('/getHeadLines');
-    });
+    try {
+        db.getHeadLinesAsJsonString().then((headLinesString) => {
+            res.send(headLinesString);
+        });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+    console.log('/getHeadLines');
 });
 
 wss.on('connection', (ws, req) => {

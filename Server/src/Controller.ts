@@ -24,11 +24,11 @@ const toggleHoliday = (weekdayIndex: number, controller: Controller) => {
 const resetHolidays = (controller: Controller) => {
     for (let i = 0; i < controller.holidays.length; i++) {
         controller.holidays[i] = false;
-        (<HTMLInputElement>document.getElementById(`weekday${i}`)).checked = false
+        (<HTMLInputElement>document.getElementById(`weekday${i}`)).checked = false;
     }
 };
 
-const insertArrayDataIntoHTMLTable = (tableId: number, data:string[][]) => {
+const insertArrayDataIntoHTMLTable = (tableId: number, data: string[][]) => {
     let maxRowLength = 0;
     for (let i = 0; i < data.length; i++) {
         maxRowLength = data[i].length > maxRowLength ? data[i].length : maxRowLength;
@@ -150,19 +150,34 @@ class Controller {
         return fetch(URL, otherParam);
     };
 
+    updateAll = async (): Promise<Response> => {
+        let data = {
+            Holidays: [],
+            HeadLines: [],
+            HTMLTables: [],
+        };
+        let lineArray: string[] = [];
+        for (let i = 0; i < 2; i++) {
+            let line = <HTMLParagraphElement>document.getElementById(`line${i}`);
+            lineArray.push(line.innerHTML);
+        }
+        let tableArray: any[] = [];
+        for (let i = 0; i < 3; i++) {
+            tableArray[i] = transformHTMLTableToArray(i);
+        }
+        data.HeadLines = lineArray;
+        data.Holidays = this.holidays;
+        data.HTMLTables = tableArray;
+        const URL = `http://${this.serverAddress}/updateAll`;
+        return fetch(URL, new PostParams(JSON.stringify(data)));
+    };
+
+
     saveDocument = async () => {
-        let promises: Promise<Response>[] = [];
-        promises.push(this.updateHolidays());
-        promises.push(this.updateHTMLTables());
-        promises.push(this.updateHeadLines());
-        await Promise.all(promises).then((res) => {
-            let errors = false;
-            res.forEach((res) => {
-                if (res.status != 200) {
-                    errors = true;
-                }
-            });
-            if (errors == false) {
+        this.updateAll().then((res) => {
+            if (res.status != 200) {
+                alert('Ein Fehler beim speichern ist aufgetreten');
+            } else {
                 alert('Dokument wurde gespeichert.');
             }
         });
