@@ -17,7 +17,7 @@ let currentValue = 1;
 const handleConnections = (ws, req) => {
     console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
-    ws.send(MessageFactory.CreateStatusMessage(0 === currentValue))
+    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0 === currentValue)))
     ws.on('message', (messageString) => {});
     ws.on('close', () => {
         ws.send('Client Disconnected: ');
