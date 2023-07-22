@@ -160,7 +160,7 @@ app.use('/src', express.static('src'));
 if (isPi()) {
     const GPIOconfig = <any>config.get('GPIO');
     const outPin = new Gpio(GPIOconfig.output, 'out');
-    const inputPin = new Gpio(GPIOconfig.input, 'in', 'both', { debounceTimeout: 20 });
+    const inputPin = new Gpio(GPIOconfig.input, 'in', 'both', { debounceTimeout: 200 });
     currentValue = inputPin.readSync()
     
     inputPin.watch((err: Error, value: BinaryValue) => {
