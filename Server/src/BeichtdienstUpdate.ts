@@ -42,8 +42,8 @@ addEventListener('DOMContentLoaded', (event) => {
 
     //Asigning EventListeners for Holiday RadioButtons
     for(let i = 0; i < 7;i++){
-        let button = document.getElementById(`weekday${i}`)
-        button.addEventListener("click",()=>{
+        let checkBox = <HTMLInputElement>document.getElementById(`weekday${i}`)
+        checkBox.addEventListener("click",()=>{
             if(i == 6){
                 toggleHoliday(-1,controller)
             }

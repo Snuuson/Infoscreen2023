@@ -45,23 +45,18 @@ const insertArrayDataIntoHTMLTable = (tableId: number, data: string[][]) => {
 
 const transformHTMLTableToArray = (tableId: number):string[][] => {
     var table = <HTMLTableElement>document.getElementById(`table${tableId}`);
-    var myArray = [];
+    var tableArray:string[][] = [];
     for (var r = 0; r < table.rows.length; r++) {
-        myArray[r] = [];
+        tableArray[r] = [];
         for (var s = 0; s < table.rows[r].cells.length; s++) {
             let inner = table.rows[r].cells[s].innerHTML;
             var re = new RegExp(String.fromCharCode(32), 'g');
             inner = inner.replace(re, '');
-            // for(let i = 0; i < inner.length; i++){
-            //     console.log(inner[i])
-            //     console.log(inner.charCodeAt(i))
-            // }
-            //inner = inner.replace(/&nbsp;/g, '');
-            myArray[r][s] = inner;
+            tableArray[r][s] = inner;
         }
     }
 
-    return myArray;
+    return tableArray;
 };
 
 class GetAllCompositeDataContainer {
@@ -87,19 +82,19 @@ class Controller {
     constructor(serverAddress: string) {
         this.serverAddress = serverAddress;
     }
-    getHolidays = async () => {
+    getHolidays = async ():Promise<boolean[]> => {
         const URL = `http://${this.serverAddress}/getHolidays`;
         return await this.get(URL);
     };
-    getHTMLTable = async () => {
+    getHTMLTable = async ():Promise<string[][]> => {
         const URL = `http://${this.serverAddress}/getHTMLTables`;
         return await this.get(URL);
     };
-    getHeadLines = async () => {
+    getHeadLines = async ():Promise<string[]> => {
         const URL = `http://${this.serverAddress}/getHeadLines`;
         return await this.get(URL);
     };
-    getAll = async () => {
+    getAll = async ():Promise<GetAllCompositeDataContainer> => {
         const URL = `http://${this.serverAddress}/getAll`;
         return await this.get(URL);
     };
