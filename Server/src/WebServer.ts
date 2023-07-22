@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import { WebSocketServer } from 'ws';
 import http from 'http';
@@ -7,6 +7,8 @@ import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
 import isPi from 'detect-rpi';
 import { Gpio, BinaryValue } from 'onoff';
+import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
+import config from 'config';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -52,7 +54,6 @@ app.post('/updateAll', jsonParser, async (req, res) => {
 app.post('/updateHeadLines', jsonParser, async (req, res) => {
     try {
         await db.updateHeadLines(JSON.stringify(req.body));
-
         res.sendStatus(200);
         OnModelUpdate();
     } catch (error) {
@@ -68,7 +69,6 @@ app.post('/updateHTMLTables', jsonParser, async (req, res) => {
             await db.updateHTMLTable(i, tableArray[i]);
         }
         OnModelUpdate();
-
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
@@ -80,7 +80,6 @@ app.post('/updateHolidays', jsonParser, async (req, res) => {
     try {
         await db.updateHolidays(JSON.stringify(req.body));
         OnModelUpdate();
-
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
@@ -92,11 +91,7 @@ app.get('/', (req, res) => {
     res.sendFile('Beichtdienst.html', { root: 'static' });
 });
 app.get('/getAll', async (req, res) => {
-    let data = {
-        Holidays: [],
-        HeadLines: [],
-        HTMLTables: [],
-    };
+    let data = new GetAllCompositeDataContainer();
     data.Holidays = JSON.parse(await db.getHolidaysAsJsonString());
     data.HeadLines = JSON.parse(await db.getHeadLinesAsJsonString());
     let promises: Promise<string>[] = [];
@@ -162,11 +157,12 @@ app.use(express.static('dist'));
 app.use('/src', express.static('src'));
 
 if (isPi()) {
-    const outPin = new Gpio(17, 'out');
-    const status_switch = new Gpio(4, 'in', 'both', { debounceTimeout: 10 });
-    console.log('GPIO active');
+    const GPIOconfig = <any>config.get('GPIO');
+    const outPin = new Gpio(GPIOconfig.output, 'out');
+    const inputPin = new Gpio(GPIOconfig.input, 'in', 'both', { debounceTimeout: 20 });
+    
     let currentValue = 1;
-    status_switch.watch((err: Error, value: BinaryValue) => {
+    inputPin.watch((err: Error, value: BinaryValue) => {
         if (err) {
             console.log(err.message);
         }
@@ -182,9 +178,10 @@ if (isPi()) {
 
     process.on('SIGINT', (_) => {
         outPin.unexport();
-        status_switch.unexport();
+        inputPin.unexport();
         console.log('Closed all GPIO pins');
     });
+    console.log('GPIO active');
 }
 
 //#####Remove#####//

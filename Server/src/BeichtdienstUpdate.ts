@@ -1,5 +1,5 @@
-import { GetAllCompositeDataContainer, Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
-
+import {Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
+import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 let controller = new Controller(window.location.host);
 
 addEventListener('DOMContentLoaded', (event) => {

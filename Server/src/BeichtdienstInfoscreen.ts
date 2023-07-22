@@ -1,4 +1,5 @@
-import { GetAllCompositeDataContainer, Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
+import {Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
+import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 import { Message, MessageTypes } from './Message.js';
 

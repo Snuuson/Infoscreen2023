@@ -1,5 +1,5 @@
 import { showPopup } from './Popup.js';
-
+import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 const updateHolidayTableColors = (holidays: boolean[]) => {
     let table = <HTMLTableElement>document.getElementById('table1');
 
@@ -59,11 +59,7 @@ const transformHTMLTableToArray = (tableId: number): string[][] => {
     return tableArray;
 };
 
-class GetAllCompositeDataContainer {
-    Holidays: boolean[];
-    HeadLines: string[];
-    HTMLTables: string[][][];
-}
+
 
 class PostParams {
     body = '';
@@ -175,4 +171,4 @@ class Controller {
     };
 }
 
-export { GetAllCompositeDataContainer, Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };
+export {Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };
