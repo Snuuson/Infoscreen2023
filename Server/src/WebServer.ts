@@ -13,10 +13,11 @@ const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const jsonParser = bodyParser.json();
-
+let currentValue = 1;
 const handleConnections = (ws, req) => {
     console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
+    ws.send(MessageFactory.CreateStatusMessage(0 === currentValue))
     ws.on('message', (messageString) => {});
     ws.on('close', () => {
         ws.send('Client Disconnected: ');
@@ -161,7 +162,7 @@ if (isPi()) {
     const outPin = new Gpio(GPIOconfig.output, 'out');
     const inputPin = new Gpio(GPIOconfig.input, 'in', 'both', { debounceTimeout: 20 });
     
-    let currentValue = 1;
+    
     inputPin.watch((err: Error, value: BinaryValue) => {
         if (err) {
             console.log(err.message);
