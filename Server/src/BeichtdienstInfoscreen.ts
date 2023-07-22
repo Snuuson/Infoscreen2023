@@ -1,11 +1,20 @@
-import {Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
+import { Controller, insertArrayDataIntoHTMLTable, toggleHoliday, updateHolidayTableColors } from './Controller.js';
 import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 import { Message, MessageTypes } from './Message.js';
 
 let controller = new Controller(window.location.host);
 let ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
-
+const setSign = (canEnter:boolean) => {
+    let sign = document.getElementById('sign');
+    if (canEnter === true) {
+        sign.innerHTML = 'BITTE   EINTRETEN';
+        sign.style.backgroundColor = 'green';
+    } else {
+        sign.innerHTML = 'BITTE   WARTEN';
+        sign.style.backgroundColor = '#b534d8';
+    }
+};
 let updateView = (dataArray: GetAllCompositeDataContainer) => {
     //Insert Holidays
     updateHolidayTableColors(dataArray.Holidays);
@@ -39,21 +48,15 @@ addEventListener('DOMContentLoaded', (event) => {
                 updateView(res);
             });
         }
-        if (msg.type == MessageTypes.status) {
-            let sign = document.getElementById('sign');
-            if (msg.value == true) {
-                sign.innerHTML = 'BITTE   EINTRETEN';
-                sign.style.backgroundColor = 'green';
-            } else {
-                sign.innerHTML = 'BITTE   WARTEN';
-                sign.style.backgroundColor = '#b534d8';
-            }
+        else if (msg.type == MessageTypes.status) {
+            setSign(msg.value)
         }
     };
+    ws.onClose = () => {
+        setSign(false);
+    };
 
-    let sign = document.getElementById('sign');
-    sign.innerHTML = 'BITTE   WARTEN';
-    sign.style.backgroundColor = '#b534d8';
+    setSign(false)
 
     controller.getAll().then((res: GetAllCompositeDataContainer) => {
         console.log(`getAll result from database:`);

@@ -6,12 +6,14 @@ class ReconnectingWebSocket {
     socket: WebSocket;
     onOpen: CallableFunction;
     onMessage: CallableFunction;
-    constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {}, reconnectTimeoutInSeconds = 10) {
+    onClose: CallableFunction;
+    constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {},onClose = (ws)=>{}, reconnectTimeoutInSeconds = 10) {
         this.webSocketServerAddress = webSocketServerAddress;
         this.reconnectTimeoutInSeconds = reconnectTimeoutInSeconds;
         this.connectToWebSocketServer();
         this.onOpen = onOpen;
         this.onMessage = onMessage;
+        this.onClose = onClose
     }
 
     public sendMessage(message: Message) {
@@ -32,6 +34,7 @@ class ReconnectingWebSocket {
                 this.onOpen(this);
             });
             this.socket.addEventListener('close', () => {
+                this.onClose()
                 setTimeout(this.connectToWebSocketServer, this.reconnectTimeoutInSeconds * 1000);
             });
             this.socket.addEventListener('message', (message) => {
