@@ -43,7 +43,7 @@ const insertArrayDataIntoHTMLTable = (tableId: number, data: string[][]) => {
     }
 };
 
-const transformHTMLTableToArray = (tableId: number) => {
+const transformHTMLTableToArray = (tableId: number):string[][] => {
     var table = <HTMLTableElement>document.getElementById(`table${tableId}`);
     var myArray = [];
     for (var r = 0; r < table.rows.length; r++) {
@@ -64,6 +64,12 @@ const transformHTMLTableToArray = (tableId: number) => {
     return myArray;
 };
 
+class GetAllCompositeDataContainer {
+    Holidays:boolean[]
+    HeadLines:string[]
+    HTMLTables:string[][][]
+};
+
 class PostParams {
     body = '';
     method = 'POST';
@@ -78,13 +84,6 @@ class PostParams {
 class Controller {
     holidays: boolean[] = Array(6).fill(false);
     serverAddress: string;
-    postParams = {
-        body: '',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-        },
-    };
     constructor(serverAddress: string) {
         this.serverAddress = serverAddress;
     }
@@ -137,20 +136,17 @@ class Controller {
     };
 
     updateAll = async (): Promise<Response> => {
-        let data = {
-            Holidays: [],
-            HeadLines: [],
-            HTMLTables: [],
-        };
+        
         let lineArray: string[] = [];
         for (let i = 0; i < 2; i++) {
             let line = <HTMLParagraphElement>document.getElementById(`line${i}`);
             lineArray.push(line.innerHTML);
         }
-        let tableArray: any[] = [];
+        let tableArray: string[][][] = [];
         for (let i = 0; i < 3; i++) {
             tableArray[i] = transformHTMLTableToArray(i);
         }
+        let data = new GetAllCompositeDataContainer()
         data.HeadLines = lineArray;
         data.Holidays = this.holidays;
         data.HTMLTables = tableArray;
@@ -185,4 +181,4 @@ class Controller {
     };
 }
 
-export { Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };
+export {GetAllCompositeDataContainer, Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };

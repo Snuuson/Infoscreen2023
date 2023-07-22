@@ -1,4 +1,4 @@
-import {Controller,insertArrayDataIntoHTMLTable,toggleHoliday,updateHolidayTableColors} from './Controller.js'
+import {GetAllCompositeDataContainer,Controller,insertArrayDataIntoHTMLTable,toggleHoliday,updateHolidayTableColors} from './Controller.js'
 
 
 let controller = new Controller(window.location.host)
@@ -18,7 +18,7 @@ addEventListener('DOMContentLoaded', (event) => {
     //Uncomment next line if you want to reset db to default values
     //controller.saveDocument()
     
-    controller.getAll().then((res)=>{
+    controller.getAll().then((res:GetAllCompositeDataContainer)=>{
         console.log(`getAll result from database:`)
         console.log(res)
         //Insert Holidays
@@ -34,8 +34,8 @@ addEventListener('DOMContentLoaded', (event) => {
         }
 
         //Insert Headlines
-        for (let i = 0; i < res.length; i++) {
-            document.getElementById(`line${i}`).innerHTML = res[i];
+        for (let i = 0; i < res.HeadLines.length; i++) {
+            document.getElementById(`line${i}`).innerHTML = res.HeadLines[i];
         }
     })
     
