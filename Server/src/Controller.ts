@@ -43,9 +43,9 @@ const insertArrayDataIntoHTMLTable = (tableId: number, data: string[][]) => {
     }
 };
 
-const transformHTMLTableToArray = (tableId: number):string[][] => {
+const transformHTMLTableToArray = (tableId: number): string[][] => {
     var table = <HTMLTableElement>document.getElementById(`table${tableId}`);
-    var tableArray:string[][] = [];
+    var tableArray: string[][] = [];
     for (var r = 0; r < table.rows.length; r++) {
         tableArray[r] = [];
         for (var s = 0; s < table.rows[r].cells.length; s++) {
@@ -60,10 +60,10 @@ const transformHTMLTableToArray = (tableId: number):string[][] => {
 };
 
 class GetAllCompositeDataContainer {
-    Holidays:boolean[]
-    HeadLines:string[]
-    HTMLTables:string[][][]
-};
+    Holidays: boolean[];
+    HeadLines: string[];
+    HTMLTables: string[][][];
+}
 
 class PostParams {
     body = '';
@@ -82,28 +82,28 @@ class Controller {
     constructor(serverAddress: string) {
         this.serverAddress = serverAddress;
     }
-    getHolidays = async ():Promise<boolean[]> => {
+    getHolidays = async (): Promise<boolean[]> => {
         const URL = `http://${this.serverAddress}/getHolidays`;
         return await this.get(URL);
     };
-    getHTMLTable = async ():Promise<string[][]> => {
+    getHTMLTable = async (): Promise<string[][]> => {
         const URL = `http://${this.serverAddress}/getHTMLTables`;
         return await this.get(URL);
     };
-    getHeadLines = async ():Promise<string[]> => {
+    getHeadLines = async (): Promise<string[]> => {
         const URL = `http://${this.serverAddress}/getHeadLines`;
         return await this.get(URL);
     };
-    getAll = async ():Promise<GetAllCompositeDataContainer> => {
+    getAll = async (): Promise<GetAllCompositeDataContainer> => {
         const URL = `http://${this.serverAddress}/getAll`;
         return await this.get(URL);
     };
 
-    get = async (URL:string):Promise<any> => {
+    get = async (URL: string): Promise<any> => {
         let respones = await fetch(URL);
         let result = await respones.json();
         return result;
-    }
+    };
 
     updateHolidays = async (): Promise<Response> => {
         const URL = `http://${this.serverAddress}/updateHolidays`;
@@ -131,7 +131,6 @@ class Controller {
     };
 
     updateAll = async (): Promise<Response> => {
-        
         let lineArray: string[] = [];
         for (let i = 0; i < 2; i++) {
             let line = <HTMLParagraphElement>document.getElementById(`line${i}`);
@@ -141,7 +140,7 @@ class Controller {
         for (let i = 0; i < 3; i++) {
             tableArray[i] = transformHTMLTableToArray(i);
         }
-        let data = new GetAllCompositeDataContainer()
+        let data = new GetAllCompositeDataContainer();
         data.HeadLines = lineArray;
         data.Holidays = this.holidays;
         data.HTMLTables = tableArray;
@@ -152,9 +151,9 @@ class Controller {
 
     saveDocument = async () => {
         document.body.style.cursor = 'wait';
-        let saveButton = (<HTMLInputElement>document.getElementById("saveButton"))
+        let saveButton = <HTMLInputElement>document.getElementById('saveButton');
         saveButton.disabled = true;
-        saveButton.style.cursor = 'wait'
+        saveButton.style.cursor = 'wait';
         this.updateAll()
             .then((res) => {
                 if (res.status === 200) {
@@ -164,16 +163,16 @@ class Controller {
                 }
                 document.body.style.cursor = 'default';
                 saveButton.disabled = false;
-                saveButton.style.cursor = 'default'
+                saveButton.style.cursor = 'default';
             })
             .catch((error) => {
                 console.log(error);
                 alert('Es ist ein Fehler aufgetreten.');
                 document.body.style.cursor = 'default';
                 saveButton.disabled = false;
-                saveButton.style.cursor = 'default'
+                saveButton.style.cursor = 'default';
             });
     };
 }
 
-export {GetAllCompositeDataContainer, Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };
+export { GetAllCompositeDataContainer, Controller, updateHolidayTableColors, toggleHoliday, insertArrayDataIntoHTMLTable };

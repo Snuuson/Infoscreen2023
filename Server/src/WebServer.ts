@@ -6,7 +6,7 @@ import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { MessageFactory } from './Message.js';
 import isPi from 'detect-rpi';
-import { Gpio,BinaryValue } from 'onoff';
+import { Gpio, BinaryValue } from 'onoff';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -166,7 +166,7 @@ if (isPi()) {
     const status_switch = new Gpio(4, 'in', 'both', { debounceTimeout: 10 });
     console.log('GPIO active');
     let currentValue = 1;
-    status_switch.watch((err:Error, value:BinaryValue) => {
+    status_switch.watch((err: Error, value: BinaryValue) => {
         if (err) {
             console.log(err.message);
         }
