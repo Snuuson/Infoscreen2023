@@ -45,6 +45,7 @@ class ReconnectingWebSocket {
                 if (msg.type === MessageTypes.heartbeat) {
                     console.log('Recieved heartbeat message');
                     this.missedHeartbeats = 0;
+                    return
                 }
                 this.onMessage(message);
             });
