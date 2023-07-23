@@ -8,6 +8,7 @@ class ReconnectingWebSocket {
     onMessage: CallableFunction;
     onClose: CallableFunction;
     missedHeartbeats = 0;
+    heartbeatInterval;
     constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {}, onClose = (ws) => {}, reconnectTimeoutInSeconds = 10) {
         this.webSocketServerAddress = webSocketServerAddress;
         this.reconnectTimeoutInSeconds = reconnectTimeoutInSeconds;
@@ -40,20 +41,22 @@ class ReconnectingWebSocket {
                 setTimeout(this.connectToWebSocketServer, this.reconnectTimeoutInSeconds * 1000);
             });
             this.socket.addEventListener('message', (message) => {
-                let msg = <Message>JSON.parse(message.data)
-                if(msg.type === MessageTypes.heartbeat){
-                    console.log("Recieved heartbeat message")
-                    this.missedHeartbeats = 0
+                let msg = <Message>JSON.parse(message.data);
+                if (msg.type === MessageTypes.heartbeat) {
+                    console.log('Recieved heartbeat message');
+                    this.missedHeartbeats = 0;
                 }
                 this.onMessage(message);
             });
         }
     };
     sendHeartbeatSignals = () => {
-        setInterval(() => {
-            if(this.missedHeartbeats >= 3){
-                this.socket.close()
-                this.socket = null
+        this.missedHeartbeats = 0;
+        this.heartbeatInterval = setInterval(() => {
+            if (this.missedHeartbeats >= 3) {
+                this.socket.close();
+                this.socket = null;
+                clearInterval(this.heartbeatInterval);
             }
             this.socket.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
             this.missedHeartbeats++;
