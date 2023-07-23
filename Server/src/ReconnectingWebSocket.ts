@@ -57,6 +57,7 @@ class ReconnectingWebSocket {
             if (this.missedHeartbeats >= 3) {
                 this.socket.close();
                 this.socket = null;
+                this.onClose();
                 clearInterval(this.heartbeatInterval);
             }else{
                 this.socket.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
