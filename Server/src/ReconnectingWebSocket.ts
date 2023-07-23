@@ -57,10 +57,12 @@ class ReconnectingWebSocket {
                 this.socket.close();
                 this.socket = null;
                 clearInterval(this.heartbeatInterval);
+            }else{
+                this.socket.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
+                this.missedHeartbeats++;
+                console.log('Sending heartbeat message');
             }
-            this.socket.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
-            this.missedHeartbeats++;
-            console.log('Sending heartbeat message');
+            
         }, 1000);
     };
 }
