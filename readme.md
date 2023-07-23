@@ -53,7 +53,7 @@ static ip_address=192.168.1.2/24
 ```
 #### Run Webserver on startup
 - Create System Service [StackOverflow](https://stackoverflow.com/questions/60100830/how-should-i-start-a-node-js-script-automatically)
--- Create file in `/etc/systemd/system`  with with the `.service`  extension
+-- Create file in `/etc/systemd/system`  with with the `.service`  extension 
 --With file contents:
 ```
 [Unit]
@@ -71,7 +71,9 @@ ExecStart= node /home/Infoscreen/Infoscreen2023/Server/dist/WebServer.js
 ```
 - Enable: `systemctl enable <your_service_name>.service`
 #### GPIO configuration
-Set Input/Output pin in `Server/config/default.json`
+
+To change GPIO pins the for the switch: 
+- Set Input/Output pin in `Server/config/default.json`
 ## Client (Beichtdienst Anzeige)
 ### Overview
 ##### OS
