@@ -74,6 +74,8 @@ ExecStart= node /home/Infoscreen/Infoscreen2023/Server/dist/WebServer.js
 
 To change GPIO pins the for the switch: 
 - Set Input/Output pin in `Server/config/default.json`
+-- Default input: GPIO 4; output: GPIO 17
+--[Belegung GPIO](https://www.elektronik-kompendium.de/sites/raspberry-pi/1907101.htm)
 ## Client (Beichtdienst Anzeige)
 ### Overview
 ##### OS
