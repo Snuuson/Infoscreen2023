@@ -22,6 +22,11 @@
 - run: `sudo apt-get update && sudo apt-get upgrade`
 - install nodejs: `sudo apt-get install nodejs`
 - install npm: `sudo apt-get install npm`
+- update nodejs: 
+--`npm cache clean -f`
+--`npm install -g n`
+--`sudo n stable`
+-- re-open Terminal
 #### Webserver Installation
 Project should be cloned to `/home/Infoscreen/`([Git Repository](https://github.com/Snuuson/Infoscreen2023.git))
 1. Change directory to `cd /home/Infoscreen/Infoscreen2023/Server`
