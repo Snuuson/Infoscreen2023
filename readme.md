@@ -24,7 +24,7 @@
 - install npm: `sudo apt-get install npm`
 - update nodejs: 
 --`npm cache clean -f`
---`npm install -g n`
+--`sudo npm install -g n`
 --`sudo n stable`
 -- re-open Terminal
 #### Webserver Installation
