@@ -41,13 +41,10 @@ static ip_address=192.168.1.2/24
 #### Run Chromium Browser on startup
 - To hide the mouse cursor install `sudo apt-get install unclutter`
 - Append to file at `/etc/xdg/lxsession/LXDE-pi/autostart`
+>*Do not place comments on the same lines as the commands*
  ```
-@unclutter -idle 0.1 -root
-@xscreensaver -no-splash		#Turns the screensaver off
-@xset s off						#Disable screen saver blanking
-@xset -dpms						#Display Power Management Signaling off
-@xset s noblank					#Turn screen blanking off(black screen but display on)
-@chromium-browser --incognito --kiosk http://localhost:3000/updateBeichtdienst.html  # load chromium after boot and open the website in full screen mode
+ #load chromium after boot and open the website in full screen mode
+@chromium-browser --incognito --kiosk http://localhost:3000/updateBeichtdienst.html  
 ```
 #### Run Webserver on startup
 - Create System Service [StackOverflow](https://stackoverflow.com/questions/60100830/how-should-i-start-a-node-js-script-automatically)
@@ -68,8 +65,9 @@ WorkingDirectory=/home/Infoscreen/Infoscreen2023/Server/
 ExecStart= node /home/Infoscreen/Infoscreen2023/Server/dist/WebServer.js
 ```
 - Enable: `systemctl enable <your_service_name>.service`
-
-## Client (Infoscreen Anzeige)
+#### GPIO configuration
+Set Input/Output pin in `Server/config/default.json`
+## Client (Beichtdienst Anzeige)
 ### Overview
 ##### OS
 - RaspberryPi OS (**64bit**)
@@ -92,14 +90,22 @@ static ip_address=192.168.1.3/24
 ```
 
 #### Run Chromium Browser on Startup and Set AlwaysOn Display
-- Append to file at `/etc/xdg/lxsession/LXDE-pi/autostart`
- ```
+ - Turn off "Screen Blanking" in Raspberry Pi Configuration (GUI)
+ - Append to file at `/etc/xdg/lxsession/LXDE-pi/autostart`
+ >*Do not place comments on the same lines as the commands*
+```
 @unclutter -idle 0.1 -root
-@xscreensaver -no-splash		#Turns the screensaver off
-@xset s off						#Disable screen saver blanking
-@xset -dpms						#Display Power Management Signaling off
-@xset s noblank					#Turn screen blanking off(black screen but display on)
-@chromium-browser --incognito --kiosk http://192.168.1.2:3000/Beichtdienst.html  # load chromium after boot and open the website in full screen mode
+#Turns the screensaver off
+#@xscreensaver -no-splash		
+#Disable screen saver blanking
+@xset s 0 0
+#Display Power Management Signaling off
+@xset dpms 0 0 0
+#Turn screen blanking off(black screen but display on)
+@xset s noblank
+@xet s noexpose
+#load chromium after boot and open the website in full screen mode
+@chromium-browser --incognito --kiosk http://192.168.1.2:3000/Beichtdienst.html
 ```
 ## Sequence Diagram
 
