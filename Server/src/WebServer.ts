@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
-import { MessageFactory } from './Message.js';
+import {Message, MessageFactory, MessageTypes } from './Message.js';
 import isPi from 'detect-rpi';
 import { Gpio, BinaryValue } from 'onoff';
 import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
@@ -18,7 +18,13 @@ const handleConnections = (ws, req) => {
     console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
     ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0 === currentValue)))
-    ws.on('message', (messageString) => {});
+    ws.on('message', (messageString) => {
+        let msg = <Message>JSON.parse(messageString)
+        if(msg.type === MessageTypes.heartbeat){
+            console.log("Recieved heartbeat message")
+            ws.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()))
+        }
+    });
     ws.on('close', () => {
         ws.send('Client Disconnected: ');
     });
@@ -27,7 +33,7 @@ const handleConnections = (ws, req) => {
             const msg = MessageFactory.CreateStatusMessage(randomIntFromInterval(0, 1) == 0 ? true : false);
             const json_msg = JSON.stringify(msg);
             ws.send(json_msg);
-        }, 10000);
+        }, 500);
     }
 };
 const OnModelUpdate = () => {

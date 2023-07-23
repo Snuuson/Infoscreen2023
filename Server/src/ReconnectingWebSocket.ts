@@ -7,13 +7,14 @@ class ReconnectingWebSocket {
     onOpen: CallableFunction;
     onMessage: CallableFunction;
     onClose: CallableFunction;
-    constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {},onClose = (ws)=>{}, reconnectTimeoutInSeconds = 10) {
+    missedHeartbeats = 0;
+    constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {}, onClose = (ws) => {}, reconnectTimeoutInSeconds = 10) {
         this.webSocketServerAddress = webSocketServerAddress;
         this.reconnectTimeoutInSeconds = reconnectTimeoutInSeconds;
         this.connectToWebSocketServer();
         this.onOpen = onOpen;
         this.onMessage = onMessage;
-        this.onClose = onClose
+        this.onClose = onClose;
     }
 
     public sendMessage(message: Message) {
@@ -32,15 +33,32 @@ class ReconnectingWebSocket {
             this.socket.addEventListener('open', () => {
                 console.log('Connected to WS Server');
                 this.onOpen(this);
+                this.sendHeartbeatSignals();
             });
             this.socket.addEventListener('close', () => {
-                this.onClose()
+                this.onClose();
                 setTimeout(this.connectToWebSocketServer, this.reconnectTimeoutInSeconds * 1000);
             });
             this.socket.addEventListener('message', (message) => {
+                let msg = <Message>JSON.parse(message.data)
+                if(msg.type === MessageTypes.heartbeat){
+                    console.log("Recieved heartbeat message")
+                    this.missedHeartbeats = 0
+                }
                 this.onMessage(message);
             });
         }
+    };
+    sendHeartbeatSignals = () => {
+        setInterval(() => {
+            if(this.missedHeartbeats >= 3){
+                this.socket.close()
+                this.socket = null
+            }
+            this.socket.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
+            this.missedHeartbeats++;
+            console.log('Sending heartbeat message');
+        }, 1000);
     };
 }
 

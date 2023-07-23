@@ -15,6 +15,7 @@ class Message implements Message {
 enum MessageTypes {
     status,
     updateView,
+    heartbeat
 }
 
 class MessageFactory {
@@ -23,6 +24,9 @@ class MessageFactory {
     };
     public static CreateUpdateMessage = () => {
         return new Message(MessageTypes.updateView, 'Please Update View');
+    };
+    public static CreateHeartbeatMessage = () => {
+        return new Message(MessageTypes.heartbeat, 1);
     };
 }
 
