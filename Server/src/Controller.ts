@@ -38,7 +38,7 @@ const insertArrayDataIntoHTMLTable = (tableId: number, data: string[][]) => {
     var table = <HTMLTableElement>document.getElementById(`table${tableId}`);
     for (var row = 0; row < data.length; row++) {
         for (var column = 0; column < data[row].length; column++) {
-            table.rows[row].cells[column].innerHTML = data[row][column].replace(/ /g, '&nbsp;');
+            table.rows[row].cells[column].innerHTML = data[row][column]
         }
     }
 };
@@ -50,8 +50,6 @@ const transformHTMLTableToArray = (tableId: number): string[][] => {
         tableArray[r] = [];
         for (var s = 0; s < table.rows[r].cells.length; s++) {
             let inner = table.rows[r].cells[s].innerHTML;
-            var re = new RegExp(String.fromCharCode(32), 'g');
-            inner = inner.replace(re, '');
             tableArray[r][s] = inner;
         }
     }
