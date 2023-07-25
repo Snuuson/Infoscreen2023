@@ -7,6 +7,7 @@ import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { Message, MessageFactory, MessageTypes } from './Message.js';
 import isPi from 'detect-rpi';
 import gpio from 'rpi-gpio';
+import rpio from 'rpio';
 import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 import config from 'config';
 const app: Express = express();
@@ -166,31 +167,54 @@ app.use('/src', express.static('src'));
 if (isPi()) {
     const GPIOconfig = <any>config.get('GPIO');
     const inputPin = GPIOconfig.input_1;
-    console.log(`inputPin:  ${inputPin}`)
+    console.log(`inputPin:  ${inputPin}`);
     const outputPin1 = GPIOconfig.output_1;
-    console.log(`outputPin1:  ${outputPin1}`)
+    console.log(`outputPin1:  ${outputPin1}`);
     const outputPin2 = GPIOconfig.output_2;
-    console.log(`outputPin2:  ${outputPin2}`)
-    gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
-    console.log(`${inputPin}: setup as DIR_IN and EDGE_BOTH`)
-    gpio.setup(outputPin1, gpio.DIR_OUT);
-    console.log(`${outputPin1}: setup as DIR_OUT `)
-    gpio.setup(outputPin2, gpio.DIR_OUT);
-    console.log(`${outputPin2}: setup as DIR_OUT`)
-    gpio.on('change', (channel, value: boolean) => {
-        console.log("onChange")
-        if (currentValue != value) {
-            wss.clients.forEach((ws) => {
-                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
-            });
-            gpio.write(outputPin1, value);
-            console.log(`Writing ${value} to pin  ${outputPin1}`);
-            gpio.write(outputPin2, !value);
-            console.log(`Writing ${!value} to pin  ${outputPin2}`);
-            currentValue = value;
-        }
-        console.log(`Channel ${channel} change and now has value ${value}`);
-    });
+    console.log(`outputPin2:  ${outputPin2}`);
+
+    rpio.open(inputPin, rpio.INPUT, rpio.PULL_UP);
+    console.log(`${inputPin}: setup as INPUT and PULL_UP`);
+    rpio.open(outputPin1, rpio.OUTPUT, rpio.LOW);
+    console.log(`${outputPin1}: setup as OUTPUT `);
+    rpio.open(outputPin2, rpio.OUTPUT, rpio.LOW);
+    console.log(`${outputPin2}: setup as OUTPUT `);
+
+    rpio.poll(
+        inputPin,
+        (pin: number) => {
+            rpio.msleep(20);
+
+            // if (rpio.read(pin))
+            //         return;
+            let value = rpio.read(pin);
+            if (currentValue != currentValue) {
+                console.log(`${value}`);
+                currentValue = value;
+            }
+        },
+        rpio.POLL_LOW
+    );
+
+    // gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
+    // gpio.setup(outputPin1, gpio.DIR_OUT);
+    // console.log(`${outputPin1}: setup as DIR_OUT `);
+    // gpio.setup(outputPin2, gpio.DIR_OUT);
+    // console.log(`${outputPin2}: setup as DIR_OUT`);
+    // gpio.on('change', (channel, value: boolean) => {
+    //     console.log('onChange');
+    //     if (currentValue != value) {
+    //         wss.clients.forEach((ws) => {
+    //             ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
+    //         });
+    //         gpio.write(outputPin1, value);
+    //         console.log(`Writing ${value} to pin  ${outputPin1}`);
+    //         gpio.write(outputPin2, !value);
+    //         console.log(`Writing ${!value} to pin  ${outputPin2}`);
+    //         currentValue = value;
+    //     }
+    //     console.log(`Channel ${channel} change and now has value ${value}`);
+    // });
     console.log('GPIO active');
 }
 
