@@ -183,11 +183,13 @@ if (isPi()) {
     rpio.poll(
         inputPin,
         (pin: number) => {
+
             rpio.msleep(20);
 
             // if (rpio.read(pin))
             //         return;
             let value = rpio.read(pin);
+            console.log("Polling: " + value);
             if (currentValue != currentValue) {
                 console.log(`${value}`);
                 currentValue = value;
