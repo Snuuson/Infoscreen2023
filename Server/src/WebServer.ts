@@ -4,25 +4,25 @@ import { WebSocketServer } from 'ws';
 import http from 'http';
 import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
-import {Message, MessageFactory, MessageTypes } from './Message.js';
+import { Message, MessageFactory, MessageTypes } from './Message.js';
 import isPi from 'detect-rpi';
-import { Gpio, BinaryValue } from 'onoff';
+import gpio from 'rpi-gpio';
 import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 import config from 'config';
 const app: Express = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 const jsonParser = bodyParser.json();
-let currentValue = 1;
+let currentValue = false;
 const handleConnections = (ws, req) => {
     console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
-    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0 === currentValue)))
+    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(false === currentValue)));
     ws.on('message', (messageString) => {
-        let msg = <Message>JSON.parse(messageString)
-        if(msg.type === MessageTypes.heartbeat){
-            console.log("Recieved heartbeat message")
-            ws.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()))
+        let msg = <Message>JSON.parse(messageString);
+        if (msg.type === MessageTypes.heartbeat) {
+            console.log('Recieved heartbeat message');
+            ws.send(JSON.stringify(MessageFactory.CreateHeartbeatMessage()));
         }
     });
     ws.on('close', () => {
@@ -165,28 +165,24 @@ app.use('/src', express.static('src'));
 
 if (isPi()) {
     const GPIOconfig = <any>config.get('GPIO');
-    const outPin = new Gpio(GPIOconfig.output, 'out');
-    const inputPin = new Gpio(GPIOconfig.input, 'in', 'both', { debounceTimeout: 200 });
-    currentValue = inputPin.readSync()
-    
-    inputPin.watch((err: Error, value: BinaryValue) => {
-        if (err) {
-            console.log(err.message);
-        }
+    const inputPin = GPIOconfig.input_1;
+    const outputPin1 = GPIOconfig.output_1;
+    const outputPin2 = GPIOconfig.output_2;
+    gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
+    gpio.setup(outputPin1, gpio.DIR_OUT);
+    gpio.setup(outputPin2, gpio.DIR_OUT);
+    gpio.on('change', (channel, value: boolean) => {
         if (currentValue != value) {
             wss.clients.forEach((ws) => {
-                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(0 === value)));
+                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
             });
-            outPin.writeSync(value);
+            gpio.write(outputPin1, value);
+            console.log(`Writing ${value} to pin  ${outputPin1}`);
+            gpio.write(outputPin2, !value);
+            console.log(`Writing ${!value} to pin  ${outputPin2}`);
             currentValue = value;
         }
-        console.log(value);
-    });
-
-    process.on('SIGINT', (_) => {
-        outPin.unexport();
-        inputPin.unexport();
-        console.log('Closed all GPIO pins');
+        console.log(`Channel ${channel} change and now has value ${value}`);
     });
     console.log('GPIO active');
 }
