@@ -166,12 +166,19 @@ app.use('/src', express.static('src'));
 if (isPi()) {
     const GPIOconfig = <any>config.get('GPIO');
     const inputPin = GPIOconfig.input_1;
+    console.log(`inputPin:  ${inputPin}`)
     const outputPin1 = GPIOconfig.output_1;
+    console.log(`outputPin1:  ${outputPin1}`)
     const outputPin2 = GPIOconfig.output_2;
+    console.log(`outputPin2:  ${outputPin2}`)
     gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
+    console.log(`${inputPin}: setup as DIR_IN and EDGE_BOTH`)
     gpio.setup(outputPin1, gpio.DIR_OUT);
+    console.log(`${outputPin1}: setup as DIR_OUT `)
     gpio.setup(outputPin2, gpio.DIR_OUT);
+    console.log(`${outputPin2}: setup as DIR_OUT`)
     gpio.on('change', (channel, value: boolean) => {
+        console.log("onChange")
         if (currentValue != value) {
             wss.clients.forEach((ws) => {
                 ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
