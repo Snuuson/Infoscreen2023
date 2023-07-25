@@ -189,8 +189,8 @@ if (isPi()) {
             // if (rpio.read(pin))
             //         return;
             let value = rpio.read(pin);
-            console.log("Polling: " + value);
-            if (currentValue != currentValue) {
+            console.log("Polling: " + value)
+            if (currentValue != value) {
                 console.log(`${value}`);
                 currentValue = value;
             }
