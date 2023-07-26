@@ -1,112 +1,133 @@
-	#masterDiv{
-		margin:auto;
-		left:25%;
-		position:absolute;
-		width:60%;
-		height:200%;
-		top:1%;
+@font-face {
+	font-family: times-italic;
+	src: url('../Fonts/Times\ Italic.ttf');
+}
 
-		
-	}
-	div{	
-		margin-top:10px;
-		font-family: "Times","Times New Roman", serif;
-	}
-	#header{
-		font-size:70px;
-		text-align:center;
-		background:#fff;
-		color:#e65c00;
-		width:98%;
-		margin:auto;
-	}
-	#lineDiv{
-		
-		margin:5px;
-				
-	}
-	.line{
-		position:relative;
-		margin:auto;
-		margin-top:20px;
-		text-align:center;
-		width:90%;
-		font-size:20px;
-		cursor: text;
-	}
-	table {
-	    margin-top:60px;	
-	    border-collapse: collapse;
-	    border-spacing: 0;
-		margin-left: auto;
-		margin-right: auto;
-		width:95%;
-		cursor: text;
-		
-	}
-	td{
-		border:1px solid #a0a09a;
-		text-align:center;
-		font-size:20px;
-		
-	}
-	.bigRow{
-		height:120px;
-	}
-	#tableDiv{
-		margin-top:15px;
-	}
-	.zeiten{
-		font-size:25px;
-	}
-	.singleRow{
-		font-size:25px;
-		font-weight:bold;
-		color:#e65c00;
-		background:#c1c1bd;
-	}
-	.grey{
-		background:#c1c1bd;
-	}
-	#sign{
-		font-weight:bold;
-		background:#b534d8;
-		margin:auto;
-		margin-top:120px;
-		font-size:50px;
-		height:90px;
-		line-height:90px;
-		text-align:center;
-		width: 100%;
-	}
-	.buttonDiv{
-		
-	}
-	#innerButtonDiv{
-		position:fixed;
-		top:10px;
-		left:10px;
-		text-align:center;
-		margin:auto;
-	}
-	#saveButton{
-	width:120px;
-	height:60px;
+#masterDiv {
+	margin: auto;
+	left: 25%;
+	position: absolute;
+	width: 60%;
+	height: 200%;
+	top: 1%;
+
+
+}
+
+div {
+	margin-top: 10px;
+	font-family: "Times", "Times New Roman", serif;
+}
+
+#header {
+	font-size: 70px;
+	text-align: center;
+	background: #fff;
+	color: #e65c00;
+	width: 98%;
+	margin: auto;
+}
+
+#lineDiv {
+
+	margin: 5px;
+
+}
+
+.line {
+	position: relative;
+	margin: auto;
+	margin-top: 20px;
+	text-align: center;
+	width: 90%;
+	font-size: 20px;
+	cursor: text;
+}
+
+table {
+	margin-top: 60px;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-left: auto;
+	margin-right: auto;
+	width: 95%;
+	cursor: text;
+
+}
+
+td {
+	border: 1px solid #a0a09a;
+	text-align: center;
+	font-size: 20px;
+
+}
+
+.bigRow {
+	height: 120px;
+}
+
+#tableDiv {
+	margin-top: 15px;
+}
+
+.zeiten {
+	font-size: 25px;
+}
+
+.singleRow {
+	font-size: 25px;
+	font-weight: bold;
+	color: #e65c00;
+	background: #c1c1bd;
+}
+
+.grey {
+	background: #c1c1bd;
+}
+
+#sign {
+	font-weight: bold;
+	background: #b534d8;
+	margin: auto;
+	margin-top: 120px;
+	font-size: 50px;
+	height: 90px;
+	line-height: 90px;
+	text-align: center;
+	width: 100%;
+}
+
+.buttonDiv {}
+
+#innerButtonDiv {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	text-align: center;
+	margin: auto;
+}
+
+#saveButton {
+	width: 120px;
+	height: 60px;
 	border-radius: 3px;
-	}
-	.cursive{
-	font-style:italic;
-	}
-	#FeiertagDiv{
-		
-		position:fixed;
-		top:100px;
-		left:10px;
-		text-align:leftr;
-		margin:auto;
-		
-	}
-	#outerFeiertagDiv{
-		border: 1px solid black;
-	}
+}
 
+.cursive {
+	font-family: times-italic;
+	font-style: italic;
+}
+
+#FeiertagDiv {
+
+	position: fixed;
+	top: 100px;
+	left: 10px;
+	text-align: leftr;
+	margin: auto;
+
+}
+
+#outerFeiertagDiv {
+	border: 1px solid black;
+}
