@@ -6,7 +6,6 @@ import db from './InfoscreenDB.js';
 import { HTML_Table_IDs } from './InfoscreenDB.js';
 import { Message, MessageFactory, MessageTypes } from './Message.js';
 import isPi from 'detect-rpi';
-import gpio from 'rpi-gpio';
 import rpio from 'rpio';
 import GetAllCompositeDataContainer from './GetAllCompositeDataContainer.js';
 import config from 'config';
