@@ -99,13 +99,13 @@ td {
 
 .buttonDiv {}
 
-#innerButtonDiv {
+/* #innerButtonDiv {
 	position: fixed;
 	top: 10px;
 	left: 10px;
 	text-align: center;
 	margin: auto;
-}
+} */
 
 #saveButton {
 	width: 120px;
@@ -118,7 +118,7 @@ td {
 	font-style: italic;
 }
 
-#FeiertagDiv {
+/* #FeiertagDiv {
 
 	position: fixed;
 	top: 100px;
@@ -126,8 +126,16 @@ td {
 	text-align: leftr;
 	margin: auto;
 
-}
+} */
 
 #outerFeiertagDiv {
 	border: 1px solid black;
+}
+
+#settings{
+	position: fixed;
+	top:100px;
+	left:10px;
+	text-align: left;
+	margin: auto;
 }

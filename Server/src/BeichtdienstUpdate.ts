@@ -49,4 +49,11 @@ addEventListener('DOMContentLoaded', (event) => {
             }
         });
     }
+    const number_of_table_rows_input = <HTMLInputElement>document.getElementById("table1_rows")
+    const number_of_table_columns_input = <HTMLInputElement>document.getElementById("table1_columns")
+    number_of_table_rows_input.addEventListener("change",()=>{})
+    number_of_table_columns_input.addEventListener("change",()=>{})
+    const createTable =(tableId:string)=>{
+        
+    }
 });

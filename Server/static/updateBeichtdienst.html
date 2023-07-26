@@ -2,7 +2,7 @@
     <head>
         <link rel="stylesheet" href="css/main.css" />
         <link rel="stylesheet" href="css/popup.css" />
-        <link type="image/png" sizes="32x32" rel="icon" href="./Icons/icons8-church-windows-11-outline-32.png">
+        <link type="image/png" sizes="32x32" rel="icon" href="./Icons/icons8-church-windows-11-outline-32.png" />
         <script type="module" src="BeichtdienstUpdate.js"></script>
         <script type="module" src="Popup.js"></script>
     </head>
@@ -86,29 +86,38 @@
                     </tr>
                 </table>
             </div>
-
-            <div id="buttonDiv">
-                <div id="innerButtonDiv">
-                    <button id="saveButton">Save</button>
+            <div id="settings">
+                <div id="tableSizeControll">
+                    
+                    <label>Reihen</label>
+                    <input id="table1_rows" type="number" min="1" max="6" placeholder="Anzahl der Reihen">
+                    <br>
+                    <label>Spalten</label>
+                    <input id="table1_colomns" type="number" min="1" max="6" placeholder="Anzahl der Spalten">
                 </div>
-            </div>
+                <div id="buttonDiv">
+                    <div id="innerButtonDiv">
+                        <button id="saveButton">Save</button>
+                    </div>
+                </div>
 
-            <div id="FeiertagDiv">
-                <p>Gibt es Feiertage?</p>
-                <input type="checkbox" id="weekday0" />Montag
-                <br />
-                <input type="checkbox" id="weekday1" />Dienstag
-                <br />
-                <input type="checkbox" id="weekday2" />Mittwoch
-                <br />
-                <input type="checkbox" id="weekday3" />Donnerstag
-                <br />
-                <input type="checkbox" id="weekday4" />Freitag
-                <br />
-                <input type="checkbox" id="weekday5" />Samstag
-                <br />
-                <button class="FeiertagButton" id="weekday6">Keine</button><br />
-                <!-- <button class ="TestButton" id="TestButton">Test</button><br> -->
+                <div id="FeiertagDiv">
+                    <p>Gibt es Feiertage?</p>
+                    <input type="checkbox" id="weekday0" />Montag
+                    <br />
+                    <input type="checkbox" id="weekday1" />Dienstag
+                    <br />
+                    <input type="checkbox" id="weekday2" />Mittwoch
+                    <br />
+                    <input type="checkbox" id="weekday3" />Donnerstag
+                    <br />
+                    <input type="checkbox" id="weekday4" />Freitag
+                    <br />
+                    <input type="checkbox" id="weekday5" />Samstag
+                    <br />
+                    <button class="FeiertagButton" id="weekday6">Keine</button><br />
+                    <!-- <button class ="TestButton" id="TestButton">Test</button><br> -->
+                </div>
             </div>
         </div>
     </body>
