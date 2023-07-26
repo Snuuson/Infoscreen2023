@@ -204,26 +204,6 @@ if (isPi()) {
             currentValue = value;
         }
     });
-
-    // gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
-    // gpio.setup(outputPin1, gpio.DIR_OUT);
-    // console.log(`${outputPin1}: setup as DIR_OUT `);
-    // gpio.setup(outputPin2, gpio.DIR_OUT);
-    // console.log(`${outputPin2}: setup as DIR_OUT`);
-    // gpio.on('change', (channel, value: boolean) => {
-    //     console.log('onChange');
-    //     if (currentValue != value) {
-    //         wss.clients.forEach((ws) => {
-    //             ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
-    //         });
-    //         gpio.write(outputPin1, value);
-    //         console.log(`Writing ${value} to pin  ${outputPin1}`);
-    //         gpio.write(outputPin2, !value);
-    //         console.log(`Writing ${!value} to pin  ${outputPin2}`);
-    //         currentValue = value;
-    //     }
-    //     console.log(`Channel ${channel} change and now has value ${value}`);
-    // });
     console.log('GPIO active');
 }
 

@@ -4,7 +4,7 @@ import ReconnectingWebSocket from './ReconnectingWebSocket.js';
 import { Message, MessageTypes } from './Message.js';
 
 let controller = new Controller(window.location.host);
-let ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
+let ws;
 const setSign = (err: any, canEnter: boolean) => {
     let sign = document.getElementById('sign');
     if (err) {
@@ -12,7 +12,6 @@ const setSign = (err: any, canEnter: boolean) => {
         sign.style.backgroundColor = '#C8D96F';
         return;
     }
-
     if (canEnter === true) {
         sign.innerHTML = 'BITTE   EINTRETEN';
         sign.style.backgroundColor = 'green';
@@ -36,15 +35,16 @@ let updateView = (dataArray: GetAllCompositeDataContainer) => {
         document.getElementById(`line${i}`).innerHTML = dataArray.HeadLines[i];
     }
 };
-addEventListener('DOMContentLoaded', (event) => {
-    ws.onOpen = () => {
+
+const setUpWebSocket = () => {
+    const onOpen = () => {
         controller.getAll().then((res) => {
             console.log(`getAll result from database:`);
             console.log(res);
             updateView(res);
         });
     };
-    ws.onMessage = (httpMessage) => {
+    const onMessage = (httpMessage) => {
         console.log(httpMessage.data);
         let msg = JSON.parse(httpMessage.data);
         if (msg.type == MessageTypes.updateView) {
@@ -57,12 +57,15 @@ addEventListener('DOMContentLoaded', (event) => {
             setSign(null, msg.value);
         }
     };
-    ws.onClose = () => {
+    const onClose = () => {
         setSign(true, false);
     };
+    ws = new ReconnectingWebSocket(`ws://${window.location.host}`, onOpen, onMessage, onClose);
+};
 
-    setSign(null, false);
-
+addEventListener('DOMContentLoaded', (event) => {
+    setSign(true, false);
+    setUpWebSocket();
     controller.getAll().then((res: GetAllCompositeDataContainer) => {
         console.log(`getAll result from database:`);
         console.log(res);

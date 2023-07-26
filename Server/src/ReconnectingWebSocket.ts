@@ -12,10 +12,10 @@ class ReconnectingWebSocket {
     constructor(webSocketServerAddress, onOpen = (ws) => {}, onMessage = (msg) => {}, onClose = (ws) => {}, reconnectTimeoutInSeconds = 10) {
         this.webSocketServerAddress = webSocketServerAddress;
         this.reconnectTimeoutInSeconds = reconnectTimeoutInSeconds;
-        this.connectToWebSocketServer();
         this.onOpen = onOpen;
         this.onMessage = onMessage;
         this.onClose = onClose;
+        this.connectToWebSocketServer();
     }
 
     public sendMessage(message: Message) {
