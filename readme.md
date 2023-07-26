@@ -120,11 +120,15 @@ static ip_address=192.168.1.3/24
 
 ```mermaid
 sequenceDiagram
+box Purple InfoscreenRPi
+participant Infoscreen
+participant Server
+end
 Infoscreen -->>+Server: Request tables
 Server->>-Infoscreen: Sends tables
 Switch ->>+Server: State Changed
 Server ->>-Infoscreen: State Changed
-Human->>+Server: Update tables
+Human (updateBeichtdienst.html)->>+Server: Update tables
 Note  right of  Server:  Server saves table to database
 Server-->>Infoscreen: New Tables available 
 Infoscreen -->>Server: Request Tables
