@@ -7,7 +7,7 @@ let controller = new Controller(window.location.host);
 let ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
 const setSign = (canEnter:boolean) => {
     let sign = document.getElementById('sign');
-    if (canEnter === true) {
+    if (canEnter == true) {
         sign.innerHTML = 'BITTE   EINTRETEN';
         sign.style.backgroundColor = 'green';
     } else {
