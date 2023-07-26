@@ -202,8 +202,7 @@ if (isPi()) {
                 console.log(`${value}`);
                 currentValue = value;
             }
-        },
-        rpio.POLL_LOW
+        }
     );
 
     // gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
