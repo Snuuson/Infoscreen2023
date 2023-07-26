@@ -183,14 +183,22 @@ if (isPi()) {
     rpio.poll(
         inputPin,
         (pin: number) => {
-
-            rpio.msleep(20);
-
+            rpio.msleep(10);
             // if (rpio.read(pin))
             //         return;
             let value = rpio.read(pin);
-            console.log("Polling: " + value)
+            console.log('Polling:');
             if (currentValue != value) {
+                if (value) {
+                    rpio.write(8, rpio.LOW);
+                    rpio.write(33, rpio.HIGH);
+                } else {
+                    rpio.write(8, rpio.HIGH);
+                    rpio.write(33, rpio.LOW);
+                }
+                wss.clients.forEach((ws) => {
+                    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
+                });
                 console.log(`${value}`);
                 currentValue = value;
             }
