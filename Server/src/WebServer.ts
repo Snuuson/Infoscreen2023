@@ -18,7 +18,7 @@ let currentValue = false;
 const handleConnections = (ws, req) => {
     console.log('A new Client Connected.');
     console.log(req.socket.remoteAddress);
-    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(false === currentValue)));
+    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(currentValue)));
     ws.on('message', (messageString) => {
         let msg = <Message>JSON.parse(messageString);
         if (msg.type === MessageTypes.heartbeat) {
@@ -179,31 +179,32 @@ if (isPi()) {
     console.log(`${outputPin1}: setup as OUTPUT `);
     rpio.open(outputPin2, rpio.OUTPUT, rpio.LOW);
     console.log(`${outputPin2}: setup as OUTPUT `);
-
-    rpio.poll(
-        inputPin,
-        (pin: number) => {
-            rpio.msleep(10);
-            // if (rpio.read(pin))
-            //         return;
-            let value = rpio.read(pin);
-            console.log('Polling:');
-            if (currentValue != value) {
-                if (value) {
-                    rpio.write(8, rpio.LOW);
-                    rpio.write(33, rpio.HIGH);
-                } else {
-                    rpio.write(8, rpio.HIGH);
-                    rpio.write(33, rpio.LOW);
-                }
-                wss.clients.forEach((ws) => {
-                    ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
-                });
-                console.log(`${value}`);
-                currentValue = value;
+    //Since its a pullUp pin we invert the result to get True for "Can Enter" and False for "Please Wait"
+    currentValue = rpio.read(inputPin) ? false : true;
+    rpio.poll(inputPin, (pin: number) => {
+        rpio.msleep(10);
+        //Since its a pullUp pin we invert the result to get True for "Can Enter" and False for "Please Wait"
+        let value = rpio.read(pin) ? false : true;
+        console.log('Polling:');
+        if (currentValue != value) {
+            if (value) {
+                //Can Enter
+                rpio.write(outputPin1, rpio.HIGH);
+                rpio.write(outputPin2, rpio.LOW);
+            } else {
+                //Please Wait
+                rpio.write(outputPin1, rpio.LOW);
+                rpio.write(outputPin2, rpio.HIGH);
             }
+            wss.clients.forEach((ws) => {
+                ws.send(JSON.stringify(MessageFactory.CreateStatusMessage(value)));
+            });
+            console.log(`outputPin1: ${rpio.read(outputPin1) ? true : false}`);
+            console.log(`outputPin2: ${rpio.read(outputPin2) ? true : false}`);
+            console.log(`${value}`);
+            currentValue = value;
         }
-    );
+    });
 
     // gpio.setup(inputPin, gpio.DIR_IN, gpio.EDGE_BOTH);
     // gpio.setup(outputPin1, gpio.DIR_OUT);

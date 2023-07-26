@@ -5,9 +5,15 @@ import { Message, MessageTypes } from './Message.js';
 
 let controller = new Controller(window.location.host);
 let ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
-const setSign = (canEnter:boolean) => {
+const setSign = (err: any, canEnter: boolean) => {
     let sign = document.getElementById('sign');
-    if (canEnter == false) {
+    if (err) {
+        sign.innerHTML = 'NO SIGNAL';
+        sign.style.backgroundColor = '#C8D96F';
+        return;
+    }
+
+    if (canEnter === true) {
         sign.innerHTML = 'BITTE   EINTRETEN';
         sign.style.backgroundColor = 'green';
     } else {
@@ -47,16 +53,15 @@ addEventListener('DOMContentLoaded', (event) => {
                 console.log(res);
                 updateView(res);
             });
-        }
-        else if (msg.type == MessageTypes.status) {
-            setSign(msg.value)
+        } else if (msg.type == MessageTypes.status) {
+            setSign(null, msg.value);
         }
     };
     ws.onClose = () => {
-        setSign(false);
+        setSign(true, false);
     };
 
-    setSign(false)
+    setSign(null, false);
 
     controller.getAll().then((res: GetAllCompositeDataContainer) => {
         console.log(`getAll result from database:`);
